@@ -1,7 +1,7 @@
 # second-hand-trading-platform-backend
-second-hand-trading-platform-backend
+二手交易平台 - 後端 api 系統
 
-幾點注意事項先紀錄在這邊：
+**幾點注意事項先紀錄在這邊：**
 1. 有任何動作之前，一定要開新的 branch，切勿直接改動 master 的東西
 
 2. commit 的標題請標註清楚這個 commit 做了什麼？(ex. 建立使用者登入功能 , 修改用戶聯絡平台功能)
