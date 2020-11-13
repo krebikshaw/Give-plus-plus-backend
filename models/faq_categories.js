@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class faq_categories extends Model {
+  class Faq_categories extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       Faq_categories.hasMany(models.Faq);
     }
   };
-  faq_categories.init({
+  Faq_categories.init({
     name: DataTypes.STRING,
     deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'faq_categories',
+    modelName: 'Faq_categories',
   });
-  return faq_categories;
+  return Faq_categories;
 };
