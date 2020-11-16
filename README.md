@@ -1,5 +1,11 @@
 # 二手交易平台 - 後端 api 系統
 
+下載案後：
+1. 補上 config.json
+2. 安裝套件 `npm install`
+3. 建立 table `npm run migrate`
+4. 啟動 server `npm run start`
+
 **幾點注意事項先紀錄在這邊：**
 1. 有任何動作之前，一定要開新的 branch，切勿直接改動 master 的東西
 
@@ -27,3 +33,10 @@
 
 ```
 
+5. 要改動 index.js
+    * 先在群組告知
+    * 另外開一條專門改 index.js 的 branch
+    * 改完之後發 pull request 請第二個人幫你檢查
+    * merge 之後於群組通知大家更新
+    
+    
