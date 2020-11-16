@@ -15,9 +15,33 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      seller_name: {
+        type: Sequelize.STRING
+      },
+      seller_email: {
+        type: Sequelize.STRING
+      },
+      seller_phone: {
+        type: Sequelize.STRING
+      },
+      seller_address: {
+        type: Sequelize.STRING
+      },
       client_id: {
         allowNull: false,
         type: Sequelize.INTEGER
+      },
+      client_name: {
+        type: Sequelize.STRING
+      },
+      client_email: {
+        type: Sequelize.STRING
+      },
+      client_phone: {
+        type: Sequelize.STRING
+      },
+      client_address: {
+        type: Sequelize.STRING
       },
       total_quantity: {
         type: Sequelize.INTEGER
@@ -31,20 +55,17 @@ module.exports = {
       content: {
         type: Sequelize.STRING
       },
-      client_address: {
-        type: Sequelize.STRING
-      },
-      client_email: {
-        type: Sequelize.STRING
-      },
       is_paid: {
         type: Sequelize.INTEGER
       },
       is_sent: {
         type: Sequelize.BOOLEAN
       },
+      is_canceled: {
+        type: Sequelize.BOOLEAN
+      },
       is_completed: {
-        type: Sequelize.INTEGER
+        type: Sequelize.BOOLEAN
       },
       is_refunded: {
         type: Sequelize.BOOLEAN

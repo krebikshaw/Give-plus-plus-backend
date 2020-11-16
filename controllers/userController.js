@@ -3,7 +3,17 @@ const User = db.User;
 
 const userController = {
   me: (req, res) => {
-    return res.json("取得用戶資料");
+    User.findOne({
+      where: {
+        id: req.query.userId
+      }
+    }).then(user => {
+      const result = {
+        nickname: user.nickname,
+        username: user.username,
+      };
+      return res.status(200).json(result);
+    }).catch(err => console.log(err));
   }
 }
 
