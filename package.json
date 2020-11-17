@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "get-test-data": "npx sequelize-cli db:seed:all",
     "migrate": "npx sequelize-cli db:migrate",
     "build": "npm run migrate && node index.js",
     "start": "node index.js"
