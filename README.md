@@ -5,6 +5,7 @@
 2. 安裝套件 `npm install`
 3. 建立 table `npm run migrate`
 4. 啟動 server `npm run start`
+5. 生成測試用使用者資料 `npm run get-test-data`
 
 **幾點注意事項先紀錄在這邊：**
 1. 有任何動作之前，一定要開新的 branch，切勿直接改動 master 的東西

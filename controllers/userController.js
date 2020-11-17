@@ -14,7 +14,29 @@ const userController = {
       };
       return res.status(200).json(result);
     }).catch(err => console.log(err));
-  }
+  },
+  testDelete: (req, res) => {
+    User.destroy({
+      where: {
+        id: req.query.userId,
+      },
+    })
+      .then(() => {
+        return res.status(200).json('destroy success');
+      })
+      .catch((err) => console.log(err));
+  },
+  testRestore: (req, res) => {
+    User.restore({
+      where: {
+        id: req.query.userId,
+      },
+    })
+      .then(() => {
+        return res.status(200).json('restore success');
+      })
+      .catch((err) => console.log(err));
+  },
 }
 
 module.exports = userController;
