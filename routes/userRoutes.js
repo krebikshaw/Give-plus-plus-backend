@@ -1,11 +1,20 @@
 const express = require('express');
 const userRouter = express.Router();
-const checkAuth = require('../middlewares/auth');
+const { checkAuth } = require('../middlewares/auth');
 const userController = require('../controllers/userController');
 
-userRouter.get('/', (req, res) => res.send('hellow')); // 測試用
-userRouter.get('/me', checkAuth, userController.me);
-userRouter.delete('/', checkAuth, userController.testDelete);
-userRouter.patch('/', checkAuth, userController.testRestore);
+userRouter.post('/register', userController.register);
+userRouter.post('/login', userController.login);
+userRouter.get('/logout', checkAuth, userController.logout);
+userRouter.get('/me', userController.getOwnInfo);
+userRouter.patch('/me', checkAuth, userController.updateOwnInfo);
+userRouter.patch('/password', checkAuth, userController.updateOwnPassword);
+userRouter.patch('/announcement', checkAuth, userController.updateAnnouncement);
+userRouter.get('/', checkAuth, userController.getAllUsers);
+userRouter.get('/:id', checkAuth, userController.getUserInfo);
+userRouter.patch('/:id', checkAuth, userController.updateUserInfo);
+userRouter.post('/apply', checkAuth, userController.applyForSeller);
+userRouter.delete('/delete', checkAuth, userController.deleteUser);
+userRouter.patch('/restore', checkAuth, userController.restoreUser);
 
 module.exports = userRouter;
