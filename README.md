@@ -13,11 +13,52 @@
 2. commit 的標題請標註清楚這個 commit 做了什麼？
     * 範例： 建立使用者登入功能 , 修改用戶聯絡平台功能
 
-3. 驗證登入身份的功能，統一用 checkAuth 這個 middleware 來做 
-    * 範例： 刊登新商品需驗證使用者身份： 
-      * `productRouter.post('/new', checkAuth, productController.new);)`
-    * 測試 api 時在 params 帶上 userId 來測試！
-      * `localhost:3001/v1/products/new?userId=1`
+3. 驗證登入身份的功能，**（已更新 jwt 身份驗證方法，請改由 jwt 身份驗證方式）**
+
+jwt 身份驗證，使用方法如下：
+* 在 controller 上方引入 checkToken 這個方法
+  * const { checkToken } = require('../middlewares/auth');
+* 在需要做驗證的時候，呼叫 checkToken(req)，把 request 傳進去，它會回傳 username 給你
+
+```
+// 簡易示範
+const { checkToken } = require('../middlewares/auth');    // 引入 checkToken
+
+const userController = {
+  updateUser: (req, res,) => {
+
+    // 在需要做驗證的地方，呼叫 checkToken(req)
+    const username = checkToken(req) || '';  
+
+    // 錯誤處理，沒拿到 username 就回傳錯誤
+    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    .
+    .
+    .
+       //  利用拿到的 username 來做事
+  }
+}
+```
+有拿到 username 就代表驗證成功，沒拿到就代表驗證失敗，所以驗證失敗就回傳錯誤訊息
+
+**如果這邊示範不清楚，可以參考 userController.getOwnInfo 的寫法**
+
+
+jwt 身份驗證，測試方法如下：
+* 測試 API 的時候，於 header 上面帶上參數
+  * key 填上： `Authorization`
+  * value 填上： `'Bearer ' + token`
+* token 可以利用官網 的轉換工具來產生
+
+```
+key:
+Authorization
+
+value:
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoic3VjY2VzcyJ9LCJleHAiOjE2MDU2MjM2MDUsImlhdCI6MTYwNTYyMjcwNX0.OlUUkF16Jbfh-P6K4vjGQ6ila1e-hD5D6_ITDdeK700
+
+// 上面這段 token 裡面帶著的資料為 username: "success"
+```
 
 4. api 回傳的 response 請依照規定格式填寫：(可參考 https://hackmd.io/tpoyClJGRW6kfrby5hmIHg?both)
 
