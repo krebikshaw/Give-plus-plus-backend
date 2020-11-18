@@ -55,7 +55,7 @@ key:
 Authorization
 
 value:
-Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoic3VjY2VzcyJ9LCJleHAiOjE2MDU2MjM2MDUsImlhdCI6MTYwNTYyMjcwNX0.OlUUkF16Jbfh-P6K4vjGQ6ila1e-hD5D6_ITDdeK700
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoibHVja3lsdWNreSJ9LCJleHAiOjE2MDkwNTAzMDAsImlhdCI6MTYwNTY2NjMwMH0.UZQbxATmdoh4KsazfH0IzepqOW86jCo77C24ShGWGlI
 
 // 上面這段 token 裡面帶著的資料為 username: "success"
 ```
