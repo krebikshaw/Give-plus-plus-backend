@@ -57,7 +57,7 @@ Authorization
 value:
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoibHVja3lsdWNreSJ9LCJleHAiOjE2MDkwNTAzMDAsImlhdCI6MTYwNTY2NjMwMH0.UZQbxATmdoh4KsazfH0IzepqOW86jCo77C24ShGWGlI
 
-// 上面這段 token 裡面帶著的資料為 username: "success"
+// 上面這段 token 裡面帶著的資料為 username: "luckylucky"
 ```
 
 4. api 回傳的 response 請依照規定格式填寫：(可參考 https://hackmd.io/tpoyClJGRW6kfrby5hmIHg?both)
