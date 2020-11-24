@@ -38,7 +38,7 @@ module.exports = {
         defaultValue: false,
         type: Sequelize.BOOLEAN
       },
-      announcment: {
+      announcement: {
         allowNull: true,
         type: Sequelize.TEXT
       },
