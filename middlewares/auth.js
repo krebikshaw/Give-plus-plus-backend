@@ -1,5 +1,8 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const userController = require('../controllers/userController');
 const jwtSecretKey = process.env.JWT_KEY || 'test_key'
+const db = require('../models');
+const User = db.User;
 
 const setToken = (username) => {
   const payload = {
@@ -23,12 +26,33 @@ const checkToken = (req) => {
   });
 }
 
-/*此身份驗證功能為暫時的，未來會改成用 JSON Web Token 來實作身份驗證*/
-const checkAuth = (req, res, next) => {
-  if (!req.query.userId) {
-    return res.json({ "ok": 0, "data": "您沒有權限操作此動作，請確認是否登入" });
-  }; 
-  next();
+const checkAuth = (identity) => {
+  return (req, res, next) => {
+    const username = checkToken(req) || '';
+    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    User.findOne({
+      where: {
+        username
+      }
+    })
+      .then(user => {
+        if (!user) return res.status(400).json({"ok":0,"message":"User not found"});
+        req.user = user.dataValues;
+        switch (identity) {
+          case 'isAdmin':
+            if (!req.user.is_admin) return res.status(400).json({"ok":0,"message":"permission denied"});
+            next();
+            break;
+          case 'isVendor':
+            if (!req.user.is_vendor) return res.status(400).json({"ok":0,"message":"permission denied"});
+            next();
+            break;
+          default:
+            next();
+        }
+      })
+      .catch(err => res.status(500).json({"ok":0,"data":err}));
+  }
 }
 
 module.exports = {

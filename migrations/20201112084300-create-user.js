@@ -33,7 +33,7 @@ module.exports = {
         defaultValue: false,
         type: Sequelize.BOOLEAN
       },
-      is_vender: {
+      is_vendor: {
         allowNull: false,
         defaultValue: false,
         type: Sequelize.BOOLEAN
