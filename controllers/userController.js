@@ -38,8 +38,9 @@ const userController = {
 
   },
   getOwnInfo: (req, res) => {
-    const username = checkToken(req) || '';
-    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    //const username = checkToken(req) || '';
+    //if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    username = req.user.username
     User.findOne({
       where: {
         username

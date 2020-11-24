@@ -6,7 +6,7 @@ const userController = require('../controllers/userController');
 userRouter.post('/register', userController.register);
 userRouter.post('/login', userController.login);
 userRouter.get('/logout', checkAuth, userController.logout);
-userRouter.get('/me', userController.getOwnInfo);
+userRouter.get('/me', checkAuth(), userController.getOwnInfo);
 userRouter.patch('/me', checkAuth, userController.updateOwnInfo);
 userRouter.patch('/password', checkAuth, userController.updateOwnPassword);
 userRouter.patch('/announcement', checkAuth, userController.updateAnnouncement);
