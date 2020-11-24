@@ -29,7 +29,7 @@ const checkToken = (req) => {
 const checkAuth = (identity) => {
   return (req, res, next) => {
     const username = checkToken(req) || '';
-    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    if (!username) return res.status(400).json({"ok":0,"message":"missing token"});
     User.findOne({
       where: {
         username
@@ -57,6 +57,5 @@ const checkAuth = (identity) => {
 
 module.exports = {
   checkAuth,
-  setToken,
-  checkToken
+  setToken
 };
