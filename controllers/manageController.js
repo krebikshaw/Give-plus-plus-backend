@@ -1,120 +1,99 @@
 const db = require('../models');
 const faq_category = require('../models/faq_category');
-const Faq = db.Faq;
-const Faq_categories = db.Faq_categories;
-const Rule = db.Rule;
-const Mail = db.Mail;
+const { Faq, Faq_categories, Rule, Mail, Product } = db;
+
+// these constants declare standard response message
+const successMessage = {
+  ok: 1,
+  message: 'success',
+};
+const emptyErrorMessage = {
+  ok: 0,
+  message: 'necessary data cannot be empty',
+};
+const noDataMessage = {
+  ok: 0,
+  message: 'No Data.',
+};
 
 const manageController = {
-  getAllRules: (req, res) => {
+  getAllRules: (_, res) => {
     Rule.findAll()
       .then((rules) => {
         const rulesData = {
           ok: 1,
-          data: rules.map((rule) => {
-            return {
-              id: rule.id,
-              rule: rule.rule,
-              content: rule.content,
-            };
+          data: rules.map((ruleData) => {
+            const { id, rule, content } = ruleData;
+            return { id, rule, content };
           }),
         };
         return res.status(200).json(rulesData);
       })
       .catch((err) => {
-        return res.status(400).json({ ok: 0, error: err });
+        console.log(err);
+        res.status(400).json(noDataMessage);
       });
   },
 
   getRule: (req, res) => {
     Rule.findByPk(req.params.id)
-      .then((rule) => {
-        const ruleData = {
+      .then((ruleData) => {
+        const { id, rule, content } = ruleData;
+        return res.status(200).json({
           ok: 1,
-          data: {
-            id: rule.id,
-            rule: rule.rule,
-            content: rule.content,
-          },
-        };
-        return res.status(200).json(ruleData);
+          data: { id, rule, content },
+        });
       })
-      .catch(() => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This rule does not exist.' });
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(noDataMessage);
       });
   },
 
   addRule: (req, res) => {
     const { rule, content } = req.body;
-    if (rule.trim() === '' || content.trim() === '') {
-      return res
-        .status(400)
-        .json({ ok: 0, data: 'necessary data cannot be empty' });
-    }
-    Rule.create({
-      rule,
-      content,
-    })
-      .then(() => {
-        return res.status(200).json({ ok: 1, data: 'success' });
-      })
-      .catch(() => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'something wrong, please add again.' });
+    if (!rule || !content || rule.trim() === '' || content.trim() === '')
+      return res.status(400).json(emptyErrorMessage);
+
+    Rule.create({ rule, content })
+      .then(() => res.status(200).json(successMessage))
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  editRule: (req, res) => {
+  editRule: async (req, res) => {
     const { rule, content } = req.body;
-    if (rule.trim() === '' || content.trim() === '') {
-      return res
-        .status(400)
-        .json({ ok: 0, data: 'necessary data cannot be empty' });
-    }
-    Rule.findByPk(req.params.id)
-      .then((ruleData) => {
-        ruleData
-          .update({
-            rule,
-            content,
-          })
-          .then(() => {
-            return res.status(200).json({ ok: 1, data: 'success' });
-          })
-          .catch(() => {
-            return res.status(400).json({ ok: 0, data: 'fail' });
-          });
-      })
+    if (!rule || !content || rule.trim() === '' || content.trim() === '')
+      return res.status(400).json(emptyErrorMessage);
+
+    const ruleData = await Rule.findByPk(req.params.id).then((rule) => rule);
+    if (ruleData === null) return res.status(400).json(noDataMessage);
+
+    ruleData
+      .update({ rule, content })
+      .then(() => res.status(200).json(successMessage))
       .catch((err) => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This rule does not exist.' });
+        console.log(err);
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  deleteRule: (req, res) => {
-    Rule.findByPk(req.params.id)
-      .then((rule) => {
-        rule
-          .destroy()
-          .then(() => {
-            return res.status(200).json({ ok: 1, data: 'success' });
-          })
-          .catch(() => {
-            return res.status(400).json({ ok: 0, data: 'fail' });
-          });
-      })
+  deleteRule: async (req, res) => {
+    const ruleData = await Rule.findByPk(req.params.id).then((rule) => rule);
+    if (!req.params.id) return res.status(400).json(noDataMessage);
+    if (ruleData === null) return res.status(400).json(noDataMessage);
+    ruleData
+      .destroy()
+      .then(() => res.status(200).json(successMessage))
       .catch((err) => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This rule does not exist.' });
+        console.log(err);
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  getAllFaqs: (req, res) => {
+  getAllFaqs: (_, res) => {
     Faq.findAll({
       include: Faq_categories,
     })
@@ -122,240 +101,198 @@ const manageController = {
         const faqsData = {
           ok: 1,
           data: faqs.map((faq) => {
-            return {
-              id: faq.id,
-              category: faq.Faq_category.name,
-              question: faq.question,
-              answer: faq.answer,
-            };
+            const { id, question, answer } = faq;
+            const category = faq.Faq_category.name;
+            return { id, category, question, answer };
           }),
         };
         return res.status(200).json(faqsData);
       })
       .catch((err) => {
-        return res.status(400).json({ ok: 0, error: err });
+        console.log(err);
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
   getFaq: (req, res) => {
-    Faq.findByPk(req.params.id)
+    Faq.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: Faq_categories,
+    })
       .then((faq) => {
-        const faqData = {
+        const { id, question, answer } = faq;
+        const category = faq.Faq_category.name;
+        return res.status(200).json({
           ok: 1,
-          data: {
-            id: faq.id,
-            categoryId: faq.faqCategoryId,
-            question: faq.question,
-            answer: faq.answer,
-          },
-        };
-        return res.status(200).json(faqData);
+          data: { id, category, question, answer },
+        });
       })
-      .catch(() => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This faq does not exist.' });
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(noDataMessage);
       });
   },
 
   addFaq: (req, res) => {
     const { question, answer, faqCategoryId } = req.body;
-    if (question.trim() === '' || answer.trim() === '' || !faqCategoryId) {
-      return res
-        .status(400)
-        .json({ ok: 0, data: 'necessary data cannot be empty' });
-    }
-    Faq.create({
-      question,
-      answer,
-      faqCategoryId,
-    })
-      .then(() => {
-        return res.status(200).json({ ok: 1, data: 'success' });
-      })
-      .catch(() => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'something wrong, please add again.' });
+    console.log(faqCategoryId);
+    if (question.trim() === '' || answer.trim() === '')
+      return res.status(400).json(emptyErrorMessage);
+
+    Faq.create({ question, answer, faqCategoryId })
+      .then(() => res.status(200).json(successMessage))
+      .catch((err) => {
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  editFaq: (req, res) => {
+  editFaq: async (req, res) => {
     const { question, answer, faqCategoryId } = req.body;
-    if (question.trim() === '' || answer.trim() === '' || !faqCategoryId) {
-      return res
-        .status(400)
-        .json({ ok: 0, data: 'necessary data cannot be empty.' });
-    }
-    Faq.findByPk(req.params.id)
-      .then((faqData) => {
-        faqData
-          .update({
-            question,
-            answer,
-            faqCategoryId,
-          })
-          .then(() => {
-            return res.status(200).json({ ok: 1, data: 'success' });
-          })
-          .catch(() => {
-            return res.status(400).json({ ok: 0, data: 'fail' });
-          });
-      })
+    const faqData = await Faq.findByPk(req.params.id).then(
+      (faqData) => faqData
+    );
+    if (
+      !question ||
+      !answer ||
+      !faqCategoryId ||
+      question.trim() === '' ||
+      answer.trim() === ''
+    )
+      return res.status(400).json(emptyErrorMessage);
+
+    if (faqData === null) return res.status(400).json(noDataMessage);
+    faqData
+      .update({ question, answer, faqCategoryId })
+      .then(() => res.status(200).json(successMessage))
       .catch((err) => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This faq does not exist.' });
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  deleteFaq: (req, res) => {
-    Faq.findByPk(req.params.id)
-      .then((faq) => {
-        faq
-          .destroy()
-          .then(() => {
-            return res.status(200).json({ ok: 1, data: 'success' });
-          })
-          .catch(() => {
-            return res.status(400).json({ ok: 0, data: 'fail' });
-          });
-      })
+  deleteFaq: async (req, res) => {
+    const faqData = await Faq.findByPk(req.params.id).then((faq) => faq);
+    if (faqData === null) return res.status(400).json(noDataMessage);
+    faqData
+      .destroy()
+      .then(() => res.status(200).json(successMessage))
       .catch((err) => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This faq does not exist.' });
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  getAllFaqCategories: (req, res) => {
+  getAllFaqCategories: (_, res) => {
     Faq_categories.findAll()
       .then((faqCategories) => {
         const faqCategoriesData = {
           ok: 1,
           data: faqCategories.map((faqCategories) => {
-            return {
-              id: faqCategories.id,
-              name: faqCategories.name,
-            };
+            const { id, name } = faqCategories;
+            return { id, name };
           }),
         };
         return res.status(200).json(faqCategoriesData);
       })
       .catch((err) => {
-        return res.status(400).json({ ok: 0, error: err });
+        console.log(err);
+        res.status(400).json(noDataMessage);
       });
   },
 
   addFaqCategory: (req, res) => {
     const { name } = req.body;
-    if (name.trim() === '') {
-      return res
-        .status(400)
-        .json({ ok: 0, data: 'necessary data cannot be empty' });
-    }
-    Faq_categories.create({
-      name,
-    })
-      .then(() => {
-        return res.status(200).json({ ok: 1, data: 'success' });
-      })
-      .catch(() => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'something wrong, please add again.' });
+    if (!name || name.trim() === '')
+      return res.status(400).json(emptyErrorMessage);
+
+    Faq_categories.create({ name })
+      .then(() => res.status(200).json(successMessage))
+      .catch((err) => {
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  editFaqCategory: (req, res) => {
+  editFaqCategory: async (req, res) => {
     const { name } = req.body;
-    if (name.trim() === '') {
-      return res
-        .status(400)
-        .json({ ok: 0, data: 'necessary data cannot be empty.' });
-    }
-    Faq_categories.findByPk(req.params.id)
-      .then((faqCategory) => {
-        faqCategory
-          .update({
-            name,
-          })
-          .then(() => {
-            return res.status(200).json({ ok: 1, data: 'success' });
-          })
-          .catch(() => {
-            return res.status(400).json({ ok: 0, data: 'fail' });
-          });
-      })
+    const faqCategoryData = await Faq_categories.findByPk(req.params.id).then(
+      (faqCategory) => faqCategory
+    );
+    if (!name || name.trim() === '')
+      return res.status(400).json(emptyErrorMessage);
+    if (!faqCategoryData) return res.status(400).json(noDataMessage);
+    faqCategoryData
+      .update({ name })
+      .then(() => res.status(200).json(successMessage))
       .catch((err) => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This faq category does not exist.' });
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  deleteFaqCategory: (req, res) => {
-    Faq_categories.findByPk(req.params.id)
-      .then((faqCategory) => {
-        faqCategory
-          .destroy()
-          .then(() => {
-            return res.status(200).json({ ok: 1, data: 'success' });
-          })
-          .catch(() => {
-            return res.status(400).json({ ok: 0, data: 'fail' });
-          });
-      })
+  deleteFaqCategory: async (req, res) => {
+    const faqCategoryData = await Faq_categories.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: Faq,
+    }).then((faqCategory) => faqCategory);
+    if (!faqCategoryData) return res.status(400).json(noDataMessage);
+    if (faqCategoryData.Faqs[0])
+      return res.status(400).json({ ok: 0, message: 'Category not empty.' });
+    faqCategoryData
+      .destroy()
+      .then(() => res.status(200).json(successMessage))
       .catch((err) => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This faq category does not exist.' });
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
-  getAllMails: (req, res) => {
+  getAllMails: (_, res) => {
     Mail.findAll()
       .then((mails) => {
         const mailsData = {
           ok: 1,
-          data: mails.map((mail) => {
-            return {
-              id: mail.id,
-              name: mail.name,
-              email: mail.phone,
-              content: mail.content,
-            };
+          data: mails.map((mailData) => {
+            const { id, name, email, content } = mailData;
+            return { id, name, email, content };
           }),
         };
         return res.status(200).json(mailsData);
       })
       .catch((err) => {
-        return res.status(400).json({ ok: 0, error: err });
+        console.log(err);
+        res.status(400).json({ ok: 0, message: err });
       });
   },
 
   getMail: (req, res) => {
     Mail.findByPk(req.params.id)
       .then((mail) => {
-        const mailData = {
+        const { id, name, email, content } = mail;
+        return res.status(200).json({
           ok: 1,
-          data: {
-            id: mail.id,
-            name: mail.name,
-            email: mail.phone,
-            content: mail.content,
-          },
-        };
-        return res.status(200).json(mailData);
+          data: { id, name, email, content },
+        });
       })
-      .catch(() => {
-        return res
-          .status(400)
-          .json({ ok: 0, data: 'This mail does not exist.' });
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(noDataMessage);
       });
   },
 
-  proveProductStatus: (req, res) => {},
+  editProductStatus: async (req, res) => {
+    const { status } = req.body;
+    const product = await Product.findByPk(req.params.id).then(
+      (product) => product
+    );
+    if (!status) return res.status(400).json(emptyErrorMessage);
+    if (product === null) return res.status(400).json(noDataMessage);
+    product
+      .update({ status })
+      .then(() => res.status(200).json(successMessage))
+      .catch((err) => {
+        res.status(400).json({ ok: 0, message: err });
+      });
+  },
 };
 
 module.exports = manageController;
