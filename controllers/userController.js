@@ -86,8 +86,7 @@ const userController = {
       .catch(err => res.status(500).json({"ok":0,"data":err}));
   },
   updateOwnInfo: (req, res) => {
-    const username = checkToken(req) || '';
-    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    username = req.user.username
     const { 
       nickname,
       email,
@@ -139,9 +138,7 @@ const userController = {
       .catch(err => res.status(500).json({"ok":0,"data":err}));
   },
   updateOwnPassword: (req, res) => {
-    const username = checkToken(req) || '';
-    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
-
+    username = req.user.username
     const { oldPassword, newPassword, confirmPassword } = req.body;
     if (!oldPassword.trim() || !newPassword.trim() || !confirmPassword.trim()) return res.status(400).json({"ok":0,"data":"缺少必要欄位"});
     if ( oldPassword === newPassword ) return res.status(400).json({"ok":0,"data":"新舊密碼一樣，那你幹嘛重設？"});
@@ -171,8 +168,7 @@ const userController = {
       .catch(err => res.status(500).json({"ok":0,"data":err}));
   },
   updateAnnouncement: (req, res) => {
-    const username = checkToken(req) || '';
-    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    username = req.user.username
     User.findOne({
       where: {
         username
@@ -199,7 +195,6 @@ const userController = {
     */
   },
   getUserInfo: (req, res) => {
-    /* 需做管理員身份驗證 */
     const userId = req.params.id;
     User.findOne({
       where: {
@@ -231,7 +226,6 @@ const userController = {
       .catch(err => res.status(500).json({"ok":0,"data":err}));
   },
   updateUserInfo: (req, res) => {
-    /* 需做管理員身份驗證 */
     const userId = req.params.id;
     const {
       nickname,
@@ -292,8 +286,7 @@ const userController = {
       .catch(err => res.status(500).json({"ok":0,"data":err}));
   },
   applyForSeller: (req, res) => {
-    const username = checkToken(req) || '';
-    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
+    username = req.user.username
     User.findOne({
       where: {
         username
