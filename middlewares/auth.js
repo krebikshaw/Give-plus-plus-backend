@@ -9,7 +9,7 @@ const setToken = (username) => {
     username
   };
   return jwt.sign(
-    { 
+    {
       payload, 
       exp: Math.floor(Date.now() / 1000) + (1880 * 60 * 30) 
     },

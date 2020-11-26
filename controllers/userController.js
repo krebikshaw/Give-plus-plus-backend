@@ -187,12 +187,22 @@ const userController = {
       .catch(err => res.status(500).json({"ok":0,"data":err}));
   },
   getAllUsers: (req, res) => {
-    /* 這邊要怎麼傳要設計一下 
-    const { limit, offset, where, order } = req.query;
+    let {_offset, _limit, _sort, _status, _order} = req.query;
     User.findAll({
-      
+      where: {
+        status: _status || 0
+      },
+      offset: _offset? parseInt(_offset): 0,
+      limit: _limit? parseInt(_limit): 10,
+      order: [
+        [ _sort || 'createdAt', _order || 'ASC'],
+      ],
     })
-    */
+      .then( user => {
+        if (!user) return res.status(500).json({"ok":0,"data":"查無用戶"});
+        return res.status(200).json({"ok":1,"data":user});
+      })
+      .catch(err => res.status(500).json({"ok":0,"data":err}));
   },
   getUserInfo: (req, res) => {
     const userId = req.params.id;
