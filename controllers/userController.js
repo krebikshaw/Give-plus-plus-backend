@@ -54,8 +54,6 @@ const userController = {
     res.status(400).json({"ok":0,"data":"登出不用發 api，後端不用作處理，謝謝！"});
   },
   getOwnInfo: (req, res) => {
-    //const username = checkToken(req) || '';
-    //if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
     username = req.user.username
     User.findOne({
       where: {
