@@ -96,7 +96,7 @@ const userController = {
       .catch(err => res.status(500).json({ok: 0,message: err}));
   },
 
-  // let user update there personal information
+  // let user update their personal information
   updateOwnInfo: (req, res) => {
     username = req.user.username
     const { 
