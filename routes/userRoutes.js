@@ -5,7 +5,7 @@ const { checkAuth } = require('../middlewares/auth');
 
 userRouter.post('/register', userController.register);
 userRouter.post('/login', userController.login);
-userRouter.get('/logout', checkAuth, userController.logout);
+userRouter.get('/logout', checkAuth(), userController.logout);
 userRouter.get('/me', checkAuth(), userController.getOwnInfo);
 userRouter.patch('/me', checkAuth(), userController.updateOwnInfo);
 userRouter.patch('/password', checkAuth(), userController.updateOwnPassword);
