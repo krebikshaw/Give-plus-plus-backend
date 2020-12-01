@@ -13,7 +13,8 @@ const userController = {
   // handle register
   register: (req, res) => {
     const { username, password, email } = req.body;
-    if (!username.trim() || !password.trim()) return res.status(400).json({ok: 0, message:"username, password are required"});
+    if (!username || !username.trim() || !password || !password.trim())
+      return res.status(400).json({ok: 0, message:"username, password are required"});
     User.findOne({
       where: {
         username
@@ -42,7 +43,8 @@ const userController = {
   // handle login
   login: (req, res) => {
     const { username, password } = req.body;
-    if (!username.trim() || !password.trim()) return res.status(400).json(loginFailedMessage);
+    if (!username || !username.trim() || !password || !password.trim())
+      return res.status(400).json(loginFailedMessage);
     User.findOne({
       where: {
         username
@@ -61,17 +63,12 @@ const userController = {
 
   // handle logout
   logout: (req, res) => {
-    res.status(400).json({ok: 1, message: "Sometimes you must close your eyes to see"});
+    res.status(200).json({ok: 1, message: "Sometimes you must close your eyes to see"});
   },
 
   // use token to get personal information
   getOwnInfo: (req, res) => {
-    username = req.user.username
-    User.findOne({
-      where: {
-        username
-      }
-    })
+    User.findByPk(req.user.id)
       .then(user => {
         const result = {
           userId: user.id,
@@ -81,7 +78,7 @@ const userController = {
           email: user.email,
           address: user.address,
           is_admin: user.is_admin,
-          is_vender: user.is_vender,
+          is_vendor: user.is_vendor,
           announcement: user.announcement,
           account: user.account,
           socialmedia_id: user.socialmedia_id,
@@ -96,9 +93,8 @@ const userController = {
       .catch(err => res.status(500).json({ok: 0,message: err}));
   },
 
-  // let user update there personal information
+  // let user update their personal information
   updateOwnInfo: (req, res) => {
-    username = req.user.username
     const { 
       nickname,
       email,
@@ -124,11 +120,7 @@ const userController = {
       return res.status(400).json({ok: 0,message: "incorrect birthday format"});
     }
 
-    User.findOne({
-      where: {
-        username
-      }
-    })
+    User.findByPk(req.user.id)
       .then(user => {
         if (!user) return res.status(500).json(userNotFoundMessage);
         return user.update({
@@ -151,21 +143,17 @@ const userController = {
   },
 
   updateOwnPassword: (req, res) => {
-    username = req.user.username
     const { oldPassword, newPassword, confirmPassword } = req.body;
-    if (!oldPassword.trim() || !newPassword.trim() || !confirmPassword.trim()) return res.status(400).json({ok: 0,message: "fields are all required"});
+    if (!oldPassword || !oldPassword.trim() || !newPassword ||!newPassword.trim() || !confirmPassword ||!confirmPassword.trim())
+      return res.status(400).json({ok: 0,message: "fields are all required"});
+    if (newPassword !== confirmPassword) return res.status(400).json({ok: 0,message: "newPassword is not equal to confirmPassword"});
     if ( oldPassword === newPassword ) return res.status(400).json({ok: 0,message: "oldPassword and newPassword cannot be the same"});
 
-    User.findOne({
-      where: {
-        username
-      }
-    })
+    User.findByPk(req.user.id)
       .then(user => {
         if (!user) return res.status(400).json(userNotFoundMessage);
         bcrypt.compare(oldPassword, user.password, (err, isSuccess) => {
           if (err || !isSuccess) return res.status(400).json({ok: 0,message: "Invalid oldPassword"});
-          if (newPassword !== confirmPassword) return res.status(400).json({ok: 0,message: "newPassword is not equal to confirmPassword"});
           return bcrypt.hash(newPassword, saltRounds, (err, hash) => {
             if (err) return res.status(500).json({ok: 0,message: err});
             return user.update({
@@ -182,12 +170,7 @@ const userController = {
   },
 
   updateAnnouncement: (req, res) => {
-    username = req.user.username
-    User.findOne({
-      where: {
-        username
-      }
-    })
+    User.findByPk(req.user.id)
       .then(user => {
         if (!user) return res.status(400).json(userNotFoundMessage);
         return user.update({
@@ -244,7 +227,7 @@ const userController = {
       email,
       address,
       is_admin,
-      is_vender,
+      is_vendor,
       announcement,
       account,
       socialmedia_id,
@@ -268,11 +251,7 @@ const userController = {
       return res.status(400).json({ok: 0,message: "incorrect birthday format"});
     }
 
-    User.findOne({
-      where: {
-        id: userId
-      }
-    })
+    User.findByPk(userId)
       .then(user => {
         if (!user) return res.status(500).json(userNotFoundMessage);
         return user.update({
@@ -280,7 +259,7 @@ const userController = {
           email,
           address,
           is_admin,
-          is_vender,
+          is_vendor,
           announcement,
           account,
           socialmedia_id,
@@ -300,16 +279,11 @@ const userController = {
 
   // let client apply for seller
   applyForSeller: (req, res) => {
-    username = req.user.username
-    User.findOne({
-      where: {
-        username
-      }
-    })
+    User.findByPk(req.user.id)
       .then(user => {
         if (!user) return res.status(400).json(userNotFoundMessage);
         return user.update({
-          is_vender: true
+          is_vendor: true
         })
           .then(() => {
             return res.status(200).json(successMessage);
@@ -322,7 +296,8 @@ const userController = {
   // let passerby post opinion mail
   postMail: (req, res) => {
     const { name, email, phone, content } = req.body;
-    if (!name.trim() || !email.trim() || !phone.trim() || !content.trim()) return res.status(400).json({ok: 0,message: "fields are all required"})
+    if (!name || !name.trim() || !email || !email.trim() || !phone || !phone.trim() || !content || !content.trim())
+      return res.status(400).json({ok: 0,message: "fields are all required"})
     
     const emailReg = /^([\w]+)(.[\w]+)*@([\w]+)(.[\w]{2,3}){1,2}$/;
     if (email.search(emailReg)==-1) { 
