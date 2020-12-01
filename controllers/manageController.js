@@ -135,7 +135,7 @@ const manageController = {
       });
   },
 
-  addFaq: (req, res) => {
+  addFaq: async (req, res) => {
     const { question, answer, faqCategoryId } = req.body;
     if (
       !question ||
@@ -145,6 +145,13 @@ const manageController = {
       answer.trim() === ''
     )
       return res.status(400).json(emptyErrorMessage);
+
+    const isCategoryValid = await Faq_categories.findByPk(
+      faqCategoryId
+    ).then((faqCategory) => (faqCategory !== null ? true : false));
+
+    if (!isCategoryValid)
+      return res.status(400).json({ ok: 0, message: 'Invalid category.' });
 
     Faq.create({ question, answer, faqCategoryId })
       .then(() => res.status(200).json(successMessage))
