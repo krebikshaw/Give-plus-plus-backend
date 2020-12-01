@@ -24,6 +24,7 @@ function getCartItems(cartItems) {
     return {
       cartItemId: cartItem.id,
       sellerId: cartItem.User.id,
+      sellerNickname: cartItem.User.nickname,
       productId: cartItem.Product.id,
       productName: cartItem.Product.name,
       pictureUrl: cartItem.Product.picture_url,
@@ -32,13 +33,18 @@ function getCartItems(cartItems) {
     };
   });
   const sortedCartItems = originalCartItems.reduce((acc, item) => {
-    const sellerId = 'seller' + item.sellerId;
-    if (!acc[sellerId]) acc[sellerId] = [];
-    acc[sellerId].push(item);
+    const sellerNickname = item.sellerNickname;
+    if (!acc[sellerNickname]) acc[sellerNickname] = [];
+    acc[sellerNickname].push(item);
     return acc;
   }, {});
   const cartItemsData = { ok: 1, data: sortedCartItems };
   return cartItemsData;
+}
+
+function isValidNumber(quantity) {
+  const re = /^[0-9]*[1-9][0-9]*$/;
+  return re.test(quantity);
 }
 
 const cartController = {
@@ -71,6 +77,9 @@ const cartController = {
   },
 
   addItem: async (req, res) => {
+    if (!isValidNumber(req.body.quantity))
+      return res.status(400).json({ ok: 0, message: 'Not valid' });
+
     // get product id and quantity.
     const { productId, quantity } = req.body;
     const userId = req.user.id;
@@ -132,6 +141,9 @@ const cartController = {
   },
 
   editItem: async (req, res) => {
+    if (!isValidNumber(req.body.quantity))
+      return res.status(400).json({ ok: 0, message: 'Not valid.' });
+
     const { quantity } = req.body;
     const existedCartItem = await Cart_items.findOne({
       where: {
