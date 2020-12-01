@@ -137,8 +137,13 @@ const manageController = {
 
   addFaq: (req, res) => {
     const { question, answer, faqCategoryId } = req.body;
-    console.log(faqCategoryId);
-    if (question.trim() === '' || answer.trim() === '')
+    if (
+      !question ||
+      !answer ||
+      !faqCategoryId ||
+      question.trim() === '' ||
+      answer.trim() === ''
+    )
       return res.status(400).json(emptyErrorMessage);
 
     Faq.create({ question, answer, faqCategoryId })
