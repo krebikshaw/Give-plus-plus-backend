@@ -1,5 +1,4 @@
 const db = require('../models');
-const faq_category = require('../models/faq_category');
 const { Faq, Faq_categories, Rule, Mail, Product } = db;
 
 // these constants declare standard response message
