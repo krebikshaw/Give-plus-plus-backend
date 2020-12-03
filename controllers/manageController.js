@@ -1,5 +1,4 @@
 const db = require('../models');
-const faq_category = require('../models/faq_category');
 const { Faq, Faq_categories, Rule, Mail, Product } = db;
 
 // these constants declare standard response message
@@ -135,11 +134,23 @@ const manageController = {
       });
   },
 
-  addFaq: (req, res) => {
+  addFaq: async (req, res) => {
     const { question, answer, faqCategoryId } = req.body;
-    console.log(faqCategoryId);
-    if (question.trim() === '' || answer.trim() === '')
+    if (
+      !question ||
+      !answer ||
+      !faqCategoryId ||
+      question.trim() === '' ||
+      answer.trim() === ''
+    )
       return res.status(400).json(emptyErrorMessage);
+
+    const isCategoryValid = await Faq_categories.findByPk(
+      faqCategoryId
+    ).then((faqCategory) => (faqCategory !== null ? true : false));
+
+    if (!isCategoryValid)
+      return res.status(400).json({ ok: 0, message: 'Invalid category.' });
 
     Faq.create({ question, answer, faqCategoryId })
       .then(() => res.status(200).json(successMessage))
