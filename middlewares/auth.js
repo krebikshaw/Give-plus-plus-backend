@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const userController = require('../controllers/userController');
 const jwtSecretKey = process.env.JWT_KEY || 'test_key'
 const db = require('../models');
 const User = db.User;
@@ -9,7 +8,7 @@ const setToken = (username) => {
     username
   };
   return jwt.sign(
-    { 
+    {
       payload, 
       exp: Math.floor(Date.now() / 1000) + (1880 * 60 * 30) 
     },

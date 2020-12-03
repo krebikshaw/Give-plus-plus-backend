@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       username: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING
       },
       password: {
@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       nickname: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       email: {
@@ -38,7 +38,7 @@ module.exports = {
         defaultValue: false,
         type: Sequelize.BOOLEAN
       },
-      announcment: {
+      announcement: {
         allowNull: true,
         type: Sequelize.TEXT
       },
