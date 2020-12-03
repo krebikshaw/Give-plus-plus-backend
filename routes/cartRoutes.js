@@ -1,8 +1,14 @@
 const express = require('express');
 const cartRouter = express.Router();
-const checkAuth = require('../middlewares/auth');
+const { checkAuth } = require('../middlewares/auth');
 const cartController = require('../controllers/cartController');
 
-cartRouter.get('/', (req, res) => res.send('hellow')); // 測試用
+cartRouter.use(checkAuth());
+
+cartRouter.get('/', cartController.getCart);
+cartRouter.post('/cart-items/new', cartController.addItem);
+cartRouter.patch('/cart-items/:id', cartController.editItem);
+cartRouter.delete('/cart-items/:id', cartController.deleteItem);
+cartRouter.delete('/seller/:id', cartController.deleteItemBySeller);
 
 module.exports = cartRouter;
