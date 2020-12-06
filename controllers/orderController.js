@@ -17,7 +17,6 @@ const successMessage = { ok: 1, message: "success" };
 const orderController = {
   // 取得全部訂單列表
   getAllOrders: (req, res) => {
-    is_admin = req.user.is_admin;
     Order.findAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
@@ -52,10 +51,10 @@ const orderController = {
   },
   // 刪除訂單資料 限制是已完成的狀態才可以刪除
   deleteOrder: (req, res) => {
-    is_admin = req.user.is_admin;
     Order.destroy({
       where: {
         id: req.params.id,
+        is_canceled: 1,
       },
     }).then((order) => {
       Order_items.destroy({
@@ -73,103 +72,67 @@ const orderController = {
   // 訂單取消
   cancelOrder: (req, res) => {
     let id = req.user.id;
-    // find the order I would like to cancel
     Order.findByPk(req.params.id)
       .then((order) => {
-        /// if there's no order, then return 400 res
         if (!order) return res.status(400).json(noOrderMessage);
-        // if my id is not client or seller, then return 400 res
         if (id === order.client_id || id === order.seller_id) {
-          // else update the order
-          order
-            .update({ is_canceled: 1 })
-            // if update successfully, find all the order items
-            .then(() => {
-              Order_items.findAll({ where: { OrderId: order.id } })
-                .then((orderItems) => {
-                  // find product by order item
-                  for (orderItem in orderItems) {
-                    Product.findOne({
-                      where: { id: orderItem.ProductId },
-                    })
-                      .then((product) => {
-                        // if product can be found, then update the quantity
-                        product
-                          .update({
-                            quantity:
-                              product.quantity + orderItem.product_quantity,
-                          })
-                          .then(() => {})
-                          .catch(() => {});
-                      })
-                      // if occur db error, return res 200
-                      .catch(() =>
-                        res.status(200).json({ ok: 1, message: "continue" })
-                      );
-                  }
-                  return res.status(200).json({ ok: 1, message: "success" });
-                })
-                .catch(() =>
-                  res.status(500).json({ ok: 0, message: "fail 1" })
-                );
-            })
-            .catch(() => res.status(500).json({ ok: 0, message: "fail 2" }));
+          return order.update({ is_canceled: 1 }).then(() => {
+            res.status(200).json({ ok: 1, message: "success" });
+          });
+        } else {
+          return res.status(400).json(failToCancelOrder);
         }
-        return res.status(200).json({ ok: 1, message: "success" });
       })
-      .catch(() => res.status(500).json({ ok: 0, message: "fail 4" }));
+      .catch((err) => res.status(400).json(failToCancelOrder));
   },
   // 訂單完成
   orderComplete: (req, res) => {
-    id = req.user.id;
+    let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (id === order.client_id) {
-          return order.update({ is_completed: 1 });
+          return order.update({ is_completed: 1 }).then(() => {
+            res.status(200).json(successMessage);
+          });
         } else {
           return res.status(400).json(failToCompleteOrder);
         }
-      })
-      .then(() => {
-        res.status(200).json(successMessage);
       })
       .catch((err) => res.status(400).json(failToCompleteOrder));
   },
   // 訂單出貨
   sendOrder: (req, res) => {
-    id = req.user.id;
+    let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (id === order.seller_id) {
-          return order.update({ is_sent: 1 });
+          return order.update({ is_sent: 1 }).then(() => {
+            res.status(200).json({ ok: 1, message: "success" });
+          });
         } else {
           return res.status(400).json(failToSendOrder);
         }
-      })
-      .then(() => {
-        res.status(200).json({ ok: 1, message: "success" });
       })
       .catch((err) => res.status(400).json(failToSendOrder));
   },
   // 訂單付款
   payOrder: (req, res) => {
-    id = req.user.id;
+    let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (id === order.client_id) {
-          return order.update({ is_paid: 1 });
+          return order.update({ is_paid: 1 }).then(() => {
+            res.status(200).json(successMessage);
+          });
         } else {
           return res.status(400).json(failToPaidOrder);
         }
-      })
-      .then(() => {
-        res.status(200).json(successMessage);
       })
       .catch((err) => res.status(400).json(failToPaidOrder));
   },
   // 取得自己賣的訂單列表
   sellOrder: (req, res) => {
-    id = req.user.id;
+    let id = req.user.id;
     Order.findAll({
       where: {
         seller_id: id,
@@ -182,7 +145,7 @@ const orderController = {
   },
   // 取得自己買的訂單列表
   buyOrder: (req, res) => {
-    id = req.user.id;
+    let id = req.user.id;
     Order.findAll({
       where: {
         client_id: id,
