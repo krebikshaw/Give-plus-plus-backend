@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      productId: {
+      ProductId: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      orderId: {
+      OrderId: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
@@ -44,7 +44,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {

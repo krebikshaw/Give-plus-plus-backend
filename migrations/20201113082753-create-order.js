@@ -9,7 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       order_number: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
+      },
+      UserId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       seller_id: {
         allowNull: false,
@@ -47,7 +51,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       shipping: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       total_amount: {
         type: Sequelize.INTEGER
@@ -77,6 +81,9 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
       }
     });
   },

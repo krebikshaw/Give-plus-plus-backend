@@ -43,7 +43,8 @@ const orderController = {
         },
       })
         .then((product) => {
-          console.log(product);
+          console.log(product)
+          if (!product) return res.status(400).json(noOrderMessage);
           return res.status(200).json({ ok: 1, data: product });
         })
         .catch((res, err) => res.status(400).json(noOrderMessage));
@@ -90,7 +91,7 @@ const orderController = {
     let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
-        if (id === order.client_id) {
+        if (id === order.client_id || id === order.seller_id) {
           return order.update({ is_completed: 1 }).then(() => {
             res.status(200).json(successMessage);
           });
@@ -152,7 +153,7 @@ const orderController = {
       },
     })
       .then((orders) => {
-        if (!order) return res.status(400).json(noOrderMessage);
+        if (!orders) return res.status(400).json(noOrderMessage);
         res.status(200).json({ ok: 1, data: orders });
       })
       .catch((err) => res.status(400).json(noOrderMessage));
@@ -211,7 +212,7 @@ const orderController = {
           origin_quantity: cartItem.Product.quantity,
         };
       });
-      console.log(cartItemData);
+      //console.log(cartItemData);
       const newQuantity = cartItemData.map(
         (data) => Object.values(data)[12] - Object.values(data)[5]
       );
@@ -220,9 +221,9 @@ const orderController = {
       let orderNumber =
         date.getFullYear().toString() +
         (date.getMonth() + 1).toString() +
-        date.getDate().toString() +
+        ((date.getDate()<10 ? '0' : '')+ date.getDate()).toString() +
         Math.round(Math.random() * 10000).toString();
-      //console.log(orderNumber)
+      console.log(orderNumber)
       // 新增訂單資料
       Order.create({
         UserId: req.user.id,
@@ -233,11 +234,11 @@ const orderController = {
         seller_id: cartItemData[0].sellerId,
         seller_name: cartItemData[0].sellerName,
         seller_email: cartItemData[0].sellerEmail,
-        seller_address: cartItemData[0].sellerAddress,
         order_number: orderNumber,
+        seller_address: cartItemData[0].sellerAddress,
       }).then((order) => {
         let OrderId = order.id;
-        //console.log(order)
+        console.log(order)
         // 新增訂單商品資料
         Order_items.bulkCreate(cartItemData, {
           returning: true,
