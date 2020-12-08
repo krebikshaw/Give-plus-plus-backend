@@ -339,6 +339,28 @@ const userController = {
       })
       .catch((err) => console.log(err));
   },
+
+  getVendorInfo: (req, res) => {
+    User.findByPk(req.params.id)
+      .then(user => {
+        if (!user) return res.status(500).json(userNotFoundMessage);
+        if (!user.is_vendor) return res.status(400).json({ok: 0,message: 'user is not vendor'});
+        const result = {
+          userId: user.id,
+          username: user.username,
+          nickname: user.nickname,
+          email: user.email,
+          address: user.address,
+          announcement: user.announcement,
+          account: user.account,
+          socialmedia_id: user.socialmedia_id,
+          avatar_url: user.avatar_url,
+          banner_url: user.banner_url,
+        };
+        return res.status(200).json({ok: 1,data: result});
+      })
+      .catch(err => res.status(500).json({ok: 0,message: err}));
+  }
 }
 
 module.exports = userController;
