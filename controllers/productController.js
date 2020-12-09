@@ -1,6 +1,7 @@
 const db = require('../models');
 const { Op, json } = require('sequelize');
 const { Product, Product_category, User } = db;
+const productLimit = 10;
 const statusSwitch = (status) => {
   switch (status) {
     case 'checking':
@@ -86,8 +87,14 @@ const productController = {
   // 撈取該分類商品並可篩選該分類商品的狀態
   getProductsFromCategory: (req, res) => {
     const id = req.params.id;
-    let { _offset, _limit, _sort, _status, _order } = req.query;
-    let status = _status || 'passed';
+    const page = Number(req.query._page) || 1;
+    let offset = 0;
+    if (page) {
+      offset = (page - 1) * productLimit;
+    }
+    const sort = req.query._sort || 'id';
+    const order = req.query._order || 'ASC';
+    let status = req.query._status || 'passed';
     status = statusSwitch(status);
 
     Product_category.findOne({
@@ -106,9 +113,9 @@ const productController = {
               attributes: ['id', 'username', 'nickname'],
             },
           ],
-          offset: _offset ? parseInt(_offset) : 0,
-          limit: _limit ? parseInt(_limit) : 10,
-          order: [[_sort || 'createdAt', _order || 'ASC']],
+          limit: productLimit,
+          offset: offset,
+          order: [[sort, order]],
         },
       ],
     })
@@ -129,42 +136,39 @@ const productController = {
   // 獲取該賣家商品
   getProductFromVender: (req, res) => {
     const id = req.params.id;
+    const page = Number(req.query._page) || 1;
+    let offset = 0;
+    if (page) {
+      offset = (page - 1) * productLimit;
+    }
+    const sort = req.query._sort || 'id';
+    const order = req.query._order || 'ASC';
     if (!id)
       return res.status(400).json({ ok: 0, message: 'params is required' });
-    let { _offset, _limit, _sort, _status, _order } = req.query;
-    let status = _status || 'passed';
+    let status = req.query._status || 'passed';
     status = statusSwitch(status);
 
-    User.findOne({
+    Product.findAndCountAll({
       where: {
-        id,
+        UserId: id,
+        status,
       },
-      include: [
-        {
-          model: Product,
-          where: {
-            status,
-          },
-          include: [
-            {
-              model: Product_category,
-              attributes: ['id', 'name'],
-            },
-          ],
-          offset: _offset ? parseInt(_offset) : 0,
-          limit: _limit ? parseInt(_limit) : 3,
-          order: [[_sort || 'createdAt', _order || 'ASC']],
-        },
-      ],
+      limit: productLimit,
+      offset: offset,
+      order: [[sort, order]],
     })
-      .then((user) => {
-        if (!user)
-          return res.status(400).json({ ok: 0, message: '查無此賣家' });
-        if (user.Products.length !== 0) {
-          // console.log(JSON.stringify(user.Products, null, 4));
-          return res.status(200).json({ ok: 1, data: user.Products });
+      .then((products) => {
+        //console.log(JSON.stringify(products, null, 4));
+        if (products.rows.length !== 0) {
+          return res.status(200).json({
+            ok: 1,
+            data: {
+              count: products.count,
+              products: products.rows,
+            },
+          });
         }
-        return res.status(400).json({ ok: 0, message: '該賣家無其他商品' });
+        return res.status(400).json({ ok: 0, message: '無更多商品' });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
