@@ -38,12 +38,18 @@ const orderController = {
         where: {
           OrderId: order.id,
         },
+        include: [
+          {
+            model: Order,
+            right: true, // right join
+          },
+        ],
         attributes: {
-          exclude: ["createdAt", "updatedAt", "product_category_id"],
+          exclude: [ "updatedAt", "product_category_id"],
         },
       })
         .then((product) => {
-          console.log(product)
+          console.log(product);
           if (!product) return res.status(400).json(noOrderMessage);
           return res.status(200).json({ ok: 1, data: product });
         })
