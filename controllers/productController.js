@@ -36,8 +36,14 @@ const checkInteger = (str) => {
 const productController = {
   // 撈取所有商品
   getProducts: (req, res) => {
-    let { _offset, _limit, _sort, _status, _order } = req.query;
-    let status = _status || 'passed';
+    const page = Number(req.query._page) || 1;
+    let offset = 0;
+    if (page) {
+      offset = (page - 1) * productLimit;
+    }
+    const sort = req.query._sort || 'id';
+    const order = req.query._order || 'ASC';
+    let status = req.query._status || 'passed';
     status = statusSwitch(status);
 
     Product.findAll({
@@ -54,9 +60,9 @@ const productController = {
           attributes: ['id', 'username', 'nickname'],
         },
       ],
-      offset: _offset ? parseInt(_offset) : 0,
-      limit: _limit ? parseInt(_limit) : 10,
-      order: [[_sort || 'createdAt', _order || 'ASC']],
+      limit: productLimit,
+      offset: offset,
+      order: [[sort, order]],
     })
       .then((products) => {
         if (products.length !== 0) {
@@ -101,6 +107,7 @@ const productController = {
       where: {
         id,
       },
+      attributes: ['name'],
       include: [
         {
           model: Product,
@@ -124,7 +131,13 @@ const productController = {
           return res.status(400).json({ ok: 0, message: '查無此分類' });
         if (category.Products.length !== 0) {
           // console.log(JSON.stringify(category.Products, null, 4));
-          return res.status(200).json({ ok: 1, data: category.Products });
+          return res.status(200).json({
+            ok: 1,
+            data: {
+              category: category.name,
+              products: category.Products,
+            },
+          });
         }
         return res.status(400).json({ ok: 0, message: '此分類暫無商品' });
       })
@@ -153,6 +166,16 @@ const productController = {
         UserId: id,
         status,
       },
+      include: [
+        {
+          model: Product_category,
+          attributes: ['id', 'name'],
+        },
+        {
+          model: User,
+          attributes: ['id', 'username', 'nickname'],
+        },
+      ],
       limit: productLimit,
       offset: offset,
       order: [[sort, order]],
