@@ -187,8 +187,12 @@ const userController = {
 
   // only admin
   getAllUsers: (req, res) => {
-    let {_offset, _limit, _sort, _status, _order} = req.query;
-    User.findAll({
+    let {_page, _limit, _sort, _status, _order} = req.query;
+    let _offset = 0;
+    if (_page) {
+      _offset = (_page - 1) * (_limit ? parseInt(_limit): 10);
+    }
+    User.findAndCountAll({
       where: {
         status: _status || [0, 1]
       },
@@ -200,20 +204,27 @@ const userController = {
     })
       .then( user => {
         if (!user) return res.status(500).json(userNotFoundMessage);
-        return res.status(200).json({ok: 1,data: user});
+        return res.status(200).json({ok: 1,data: {
+          count: user.count,
+          users: user.rows,
+        }});
       })
       .catch(err => res.status(500).json({ok: 0,message: err}));
   },
 
   // only admin
   searchUsers: (req, res) => {
-    let { _offset, _limit, _sort, _status, _order, _keyword } = req.query;
+    let { _page, _limit, _sort, _status, _order, _keyword } = req.query;
+    let _offset = 0;
+    if (_page) {
+      _offset = (_page - 1) * (_limit ? parseInt(_limit): 10);
+    }
     if (!_keyword)
       return res.status(400).json({ ok: 0, message: 'keyword is required' });
 
     let status = _status || [0, 1];
 
-    User.findAll({
+    User.findAndCountAll({
       where: {
         [Op.or]: [
           { 
@@ -237,7 +248,10 @@ const userController = {
     })
       .then( user => {
         if (!user) return res.status(500).json(userNotFoundMessage);
-        return res.status(200).json({ok: 1,data: user});
+        return res.status(200).json({ok: 1,data:{
+          count: user.count,
+          users: user.rows,
+        }});
       })
       .catch(err => res.status(500).json({ok: 0,message: err}));
   },
