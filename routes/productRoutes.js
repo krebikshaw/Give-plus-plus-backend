@@ -6,7 +6,17 @@ const productController = require('../controllers/productController');
 productRouter.get('/', productController.getProducts);
 productRouter.get('/categories', productController.getCategories);
 productRouter.get('/categories/:id', productController.getProductsFromCategory);
-productRouter.get('/vendor/:id?', productController.getProductFromVender);
+productRouter.get(
+  '/admin',
+  checkAuth('isAdmin'),
+  productController.getProductsForAdmin
+);
+productRouter.get(
+  '/admin/search',
+  checkAuth('isAdmin'),
+  productController.searchProductForAdmin
+);
+productRouter.get('/vendor/:id?', productController.getProductFromVendor);
 productRouter.get('/search', productController.searchProduct);
 productRouter.get('/:id', productController.getProduct);
 productRouter.post('/new', checkAuth('isVendor'), productController.addProduct);

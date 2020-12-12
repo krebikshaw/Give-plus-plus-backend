@@ -147,7 +147,7 @@ const productController = {
   },
 
   // 獲取該賣家商品
-  getProductFromVender: (req, res) => {
+  getProductFromVendor: (req, res) => {
     const id = req.params.id;
     const page = Number(req.query._page) || 1;
     let offset = 0;
@@ -459,6 +459,111 @@ const productController = {
           .catch((err) => {
             return res.status(500).json({ ok: 0, message: err });
           });
+      })
+      .catch((err) => {
+        return res.status(500).json({ ok: 0, message: err });
+      });
+  },
+
+  getProductsForAdmin: (req, res) => {
+    let { _page, _limit, _sort, _status, _order } = req.query;
+    const page = Number(_page) || 1;
+    let offset = 0;
+    if (page) {
+      offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
+    }
+    const sort = _sort || 'id';
+    const order = _order || 'ASC';
+    let status = _status || 'all';
+    status = statusSwitch(status);
+
+    Product.findAndCountAll({
+      where: {
+        status,
+      },
+      include: [
+        {
+          model: Product_category,
+          attributes: ['id', 'name'],
+        },
+        {
+          model: User,
+          attributes: ['id', 'username', 'nickname'],
+        },
+      ],
+      limit: _limit ? parseInt(_limit) : 10,
+      offset: offset,
+      order: [[sort, order]],
+    })
+      .then((products) => {
+        if (products.length !== 0) {
+          // console.log(JSON.stringify(products, null, 4));
+          return res.status(200).json({
+            ok: 1,
+            data: {
+              count: products.count,
+              products: products.rows,
+            },
+          });
+        }
+        return res.status(400).json({ ok: 0, message: '暫無商品' });
+      })
+      .catch((err) => {
+        return res.status(500).json({ ok: 0, message: err });
+      });
+  },
+
+  searchProductForAdmin: (req, res) => {
+    let { _page, _limit, _sort, _status, _order, _keyword } = req.query;
+    if (!_keyword) {
+      return res.status(400).json({ ok: 0, message: 'keyword is required' });
+    }
+    const page = Number(_page) || 1;
+    let offset = 0;
+    if (page) {
+      offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
+    }
+    const sort = _sort || 'id';
+    const order = _order || 'ASC';
+    let status = _status || 'all';
+    status = statusSwitch(status);
+
+    Product.findAndCountAll({
+      where: {
+        status,
+        name: {
+          [Op.like]: `%${_keyword}%`,
+        },
+      },
+      include: [
+        {
+          model: Product_category,
+          attributes: ['id', 'name'],
+        },
+        {
+          model: User,
+          attributes: ['id', 'username', 'nickname'],
+        },
+      ],
+      limit: _limit ? parseInt(_limit) : 10,
+      offset: offset,
+      order: [[sort, order]],
+    })
+      .then((products) => {
+        if (products.length !== 0) {
+          // console.log(JSON.stringify(products, null, 4));
+          return res.status(200).json({
+            ok: 1,
+            data: {
+              count: products.count,
+              products: products.rows,
+            },
+          });
+        }
+        if (products.length === 0 && page !== 1) {
+          return res.status(400).json({ ok: 0, message: '無更多商品' });
+        }
+        return res.status(400).json({ ok: 0, message: '查無此商品' });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
