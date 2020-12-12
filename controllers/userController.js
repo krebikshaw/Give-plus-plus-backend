@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require('../models');
+const { Op } = require('sequelize');
 const { setToken } = require('../middlewares/auth');
 const { User, Mail } = db;
 const saltRounds = 10;
@@ -190,6 +191,43 @@ const userController = {
     User.findAll({
       where: {
         status: _status || [0, 1]
+      },
+      offset: _offset? parseInt(_offset): 0,
+      limit: _limit? parseInt(_limit): 10,
+      order: [
+        [ _sort || 'createdAt', _order || 'ASC'],
+      ],
+    })
+      .then( user => {
+        if (!user) return res.status(500).json(userNotFoundMessage);
+        return res.status(200).json({ok: 1,data: user});
+      })
+      .catch(err => res.status(500).json({ok: 0,message: err}));
+  },
+
+  // only admin
+  searchUsers: (req, res) => {
+    let { _offset, _limit, _sort, _status, _order, _keyword } = req.query;
+    if (!_keyword)
+      return res.status(400).json({ ok: 0, message: 'keyword is required' });
+
+    let status = _status || [0, 1];
+
+    User.findAll({
+      where: {
+        [Op.or]: [
+          { 
+            nickname: {
+              [Op.like]: `%${_keyword}%`,
+            } 
+          },
+          {
+            username: {
+              [Op.like]: `%${_keyword}%`,
+            }
+          }
+        ],
+        status,
       },
       offset: _offset? parseInt(_offset): 0,
       limit: _limit? parseInt(_limit): 10,

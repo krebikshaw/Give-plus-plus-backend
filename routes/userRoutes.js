@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const userController = require('../controllers/userController');
 const { checkAuth } = require('../middlewares/auth');
 
+userRouter.get('/search', checkAuth('isAdmin'), userController.searchUsers);
 userRouter.post('/register', userController.register);
 userRouter.post('/login', userController.login);
 userRouter.get('/logout', checkAuth(), userController.logout);
@@ -18,5 +19,6 @@ userRouter.delete('/delete', checkAuth('isAdmin'), userController.deleteUser);
 userRouter.patch('/restore', checkAuth('isAdmin'), userController.restoreUser);
 userRouter.get('/vendor/:id', userController.getVendorInfo);
 userRouter.post('/mails', userController.postMail);
+
 
 module.exports = userRouter;
