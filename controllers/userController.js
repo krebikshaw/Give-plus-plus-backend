@@ -199,7 +199,7 @@ const userController = {
     })
       .then( user => {
         if (!user) return res.status(500).json(userNotFoundMessage);
-        return res.status(200).json({ok: 1,date: user});
+        return res.status(200).json({ok: 1,data: user});
       })
       .catch(err => res.status(500).json({ok: 0,message: err}));
   },
