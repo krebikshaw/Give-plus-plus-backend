@@ -189,7 +189,7 @@ const userController = {
     let {_offset, _limit, _sort, _status, _order} = req.query;
     User.findAll({
       where: {
-        status: _status || 0
+        status: _status || [0, 1]
       },
       offset: _offset? parseInt(_offset): 0,
       limit: _limit? parseInt(_limit): 10,
