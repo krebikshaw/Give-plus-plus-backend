@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require('../models');
 const { setToken } = require('../middlewares/auth');
-const { User, Mails } = db;
+const { User, Mail } = db;
 const saltRounds = 10;
 
 const successMessage = { ok: 1, message: 'success' };
@@ -296,7 +296,7 @@ const userController = {
   // let passerby post opinion mail
   postMail: (req, res) => {
     const { name, email, phone, content } = req.body;
-    if (!name || !name.trim() || !email || !email.trim() || !phone || !phone.trim() || !content || !content.trim())
+    if (!name|| !email|| !content  || !name.trim()  || !email.trim() || !content.trim())
       return res.status(400).json({ok: 0,message: "fields are all required"})
     
     const emailReg = /^([\w]+)(.[\w]+)*@([\w]+)(.[\w]{2,3}){1,2}$/;
@@ -304,7 +304,7 @@ const userController = {
       return res.status(400).json({ok: 0,message: "incorrect email format"});
     }
 
-    Mails.create({
+    Mail.create({
       name,
       email,
       phone,

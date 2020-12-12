@@ -17,5 +17,6 @@ userRouter.post('/apply', checkAuth(), userController.applyForSeller);
 userRouter.delete('/delete', checkAuth('isAdmin'), userController.deleteUser);
 userRouter.patch('/restore', checkAuth('isAdmin'), userController.restoreUser);
 userRouter.get('/vendor/:id', userController.getVendorInfo);
+userRouter.post('/mails', userController.postMail);
 
 module.exports = userRouter;
