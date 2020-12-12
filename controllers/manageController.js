@@ -97,13 +97,23 @@ const manageController = {
       include: Faq_categories,
     })
       .then((faqs) => {
+        const originalFaqs = faqs.map((faq) => {
+          return {
+            id: faq.id,
+            category: faq.Faq_category.name,
+            question: faq.question,
+            answer: faq.answer,
+          };
+        });
+        const categorizedFaqs = originalFaqs.reduce((acc, item) => {
+          const categoryName = item.category;
+          if (!acc[categoryName]) acc[categoryName] = [];
+          acc[categoryName].push(item);
+          return acc;
+        }, {});
         const faqsData = {
           ok: 1,
-          data: faqs.map((faq) => {
-            const { id, question, answer } = faq;
-            const category = faq.Faq_category.name;
-            return { id, category, question, answer };
-          }),
+          data: categorizedFaqs,
         };
         return res.status(200).json(faqsData);
       })
