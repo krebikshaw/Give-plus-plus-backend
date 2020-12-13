@@ -93,27 +93,26 @@ const manageController = {
   },
 
   getAllFaqs: (_, res) => {
-    Faq.findAll({
-      include: Faq_categories,
-    })
-      .then((faqs) => {
-        const originalFaqs = faqs.map((faq) => {
-          return {
-            id: faq.id,
-            category: faq.Faq_category.name,
-            question: faq.question,
-            answer: faq.answer,
+    Faq_categories.findAll({ include: Faq })
+      .then((faqCategories) => {
+        const faqList = [];
+        faqCategories.map((faqCategory) => {
+          const data = [];
+          faqCategory.Faqs.map((faq) => {
+            const item = {};
+            item.question = faq.question;
+            item.answer = faq.answer;
+            data.push(item);
+          });
+          const faqCategoryItem = {
+            faqCategoryName: faqCategory.name,
+            data,
           };
+          faqList.push(faqCategoryItem);
         });
-        const categorizedFaqs = originalFaqs.reduce((acc, item) => {
-          const categoryName = item.category;
-          if (!acc[categoryName]) acc[categoryName] = [];
-          acc[categoryName].push(item);
-          return acc;
-        }, {});
         const faqsData = {
           ok: 1,
-          data: categorizedFaqs,
+          data: faqList,
         };
         return res.status(200).json(faqsData);
       })
