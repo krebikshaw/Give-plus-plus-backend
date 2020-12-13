@@ -24,7 +24,7 @@ function getCartItems(cartItems) {
     return {
       cartItemId: cartItem.id,
       sellerId: cartItem.User.id,
-      sellerNickname: cartItem.User.nickname,
+      sellerName: cartItem.User.nickname,
       productId: cartItem.Product.id,
       productName: cartItem.Product.name,
       pictureUrl: cartItem.Product.picture_url,
@@ -32,14 +32,20 @@ function getCartItems(cartItems) {
       quantity: cartItem.product_quantity,
     };
   });
-  const sortedCartItems = originalCartItems.reduce((acc, item) => {
-    const sellerNickname = item.sellerNickname;
-    if (!acc[sellerNickname]) acc[sellerNickname] = [];
-    acc[sellerNickname].push(item);
-    return acc;
-  }, {});
-  const cartItemsData = { ok: 1, data: sortedCartItems };
-  return cartItemsData;
+  const groupData = (d) => {
+    let g = Object.entries(
+      d.reduce(
+        (r, c) => ((r[c.sellerName] = [...(r[c.sellerName] || []), c]), r),
+        {}
+      )
+    );
+    console.log(g);
+    return g.reduce(
+      (r, c) => (r.data.push({ sellerName: c[0], cartDetail: c[1] }), r),
+      { ok: 1, data: [] }
+    );
+  };
+  return groupData(originalCartItems);
 }
 
 function isValidNumber(quantity) {
