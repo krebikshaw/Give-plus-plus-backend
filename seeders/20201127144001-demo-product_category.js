@@ -29,7 +29,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        name: '票卷',
+        name: '票劵',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
