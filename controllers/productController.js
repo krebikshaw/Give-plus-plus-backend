@@ -1,7 +1,6 @@
 const db = require('../models');
 const { Op, json } = require('sequelize');
 const { Product, Product_category, User } = db;
-const productLimit = 10;
 const statusSwitch = (status) => {
   switch (status) {
     case 'checking':
@@ -36,17 +35,18 @@ const checkInteger = (str) => {
 const productController = {
   // 撈取所有商品
   getProducts: (req, res) => {
-    const page = Number(req.query._page) || 1;
+    let { _page, _limit, _sort, _status, _order } = req.query;
+    const page = Number(_page) || 1;
     let offset = 0;
     if (page) {
-      offset = (page - 1) * productLimit;
+      offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
-    const sort = req.query._sort || 'id';
-    const order = req.query._order || 'ASC';
-    let status = req.query._status || 'passed';
+    const sort = _sort || 'id';
+    const order = _order || 'ASC';
+    let status = _status || 'passed';
     status = statusSwitch(status);
 
-    Product.findAll({
+    Product.findAndCountAll({
       where: {
         status,
       },
@@ -60,16 +60,25 @@ const productController = {
           attributes: ['id', 'username', 'nickname'],
         },
       ],
-      limit: productLimit,
+      limit: _limit ? parseInt(_limit) : 10,
       offset: offset,
       order: [[sort, order]],
     })
       .then((products) => {
-        if (products.length !== 0) {
-          // console.log(JSON.stringify(products, null, 4));
-          return res.status(200).json({ ok: 1, data: products });
+        if (products.count === 0) {
+          return res.status(400).json({ ok: 0, message: '暫無商品' });
         }
-        return res.status(400).json({ ok: 0, message: '暫無商品' });
+        if (products.rows.length !== 0) {
+          // console.log(JSON.stringify(products, null, 4));
+          return res.status(200).json({
+            ok: 1,
+            data: {
+              count: products.count,
+              products: products.rows,
+            },
+          });
+        }
+        return res.status(400).json({ ok: 0, message: '無更多商品' });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
@@ -93,25 +102,32 @@ const productController = {
   // 撈取該分類商品並可篩選該分類商品的狀態
   getProductsFromCategory: (req, res) => {
     const id = req.params.id;
-    const page = Number(req.query._page) || 1;
+    let { _page, _limit, _sort, _status, _order } = req.query;
+    const page = Number(_page) || 1;
     let offset = 0;
     if (page) {
-      offset = (page - 1) * productLimit;
+      offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
-    const sort = req.query._sort || 'id';
-    const order = req.query._order || 'ASC';
-    let status = req.query._status || 'passed';
+    const sort = _sort || 'id';
+    const order = _order || 'ASC';
+    let status = _status || 'passed';
     status = statusSwitch(status);
 
     Product_category.findOne({
       where: {
         id,
       },
-      attributes: ['name'],
-      include: [
-        {
-          model: Product,
+      attributes: ['id', 'name'],
+    })
+      .then((category) => {
+        //console.log(JSON.stringify(category, null, 4));
+        if (!category) {
+          return res.status(400).json({ ok: 0, message: '查無此分類' });
+        }
+
+        Product.findAndCountAll({
           where: {
+            ProductCategoryId: category.id,
             status,
           },
           include: [
@@ -120,26 +136,31 @@ const productController = {
               attributes: ['id', 'username', 'nickname'],
             },
           ],
-          limit: productLimit,
+          limit: _limit ? parseInt(_limit) : 10,
           offset: offset,
           order: [[sort, order]],
-        },
-      ],
-    })
-      .then((category) => {
-        if (!category)
-          return res.status(400).json({ ok: 0, message: '查無此分類' });
-        if (category.Products.length !== 0) {
-          // console.log(JSON.stringify(category.Products, null, 4));
-          return res.status(200).json({
-            ok: 1,
-            data: {
-              category: category.name,
-              products: category.Products,
-            },
+        })
+          .then((products) => {
+            //console.log(JSON.stringify(products, null, 4));
+            if (products.count === 0) {
+              return res.status(400).json({ ok: 0, message: '此分類暫無商品' });
+            }
+
+            if (products.rows.length !== 0) {
+              return res.status(200).json({
+                ok: 1,
+                data: {
+                  category: category.name,
+                  count: products.count,
+                  products: products.rows,
+                },
+              });
+            }
+            return res.status(400).json({ ok: 0, message: '無更多商品' });
+          })
+          .catch((err) => {
+            return res.status(500).json({ ok: 0, message: err });
           });
-        }
-        return res.status(400).json({ ok: 0, message: '此分類暫無商品' });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
@@ -149,22 +170,113 @@ const productController = {
   // 獲取該賣家商品
   getProductFromVendor: (req, res) => {
     const id = req.params.id;
-    const page = Number(req.query._page) || 1;
-    let offset = 0;
-    if (page) {
-      offset = (page - 1) * productLimit;
-    }
-    const sort = req.query._sort || 'id';
-    const order = req.query._order || 'ASC';
     if (!id)
       return res.status(400).json({ ok: 0, message: 'params is required' });
-    let status = req.query._status || 'passed';
+    let { _page, _limit, _sort, _status, _order } = req.query;
+    const page = Number(_page) || 1;
+    let offset = 0;
+    if (page) {
+      offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
+    }
+    const sort = _sort || 'id';
+    const order = _order || 'ASC';
+    let status = _status || 'passed';
+    status = statusSwitch(status);
+
+    User.findOne({
+      where: {
+        id,
+      },
+      attributes: [
+        'id',
+        'username',
+        'nickname',
+        'email',
+        'address',
+        'announcement',
+        'account',
+        'socialmedia_id',
+        'avatar_url',
+        'banner_url',
+        'is_admin',
+        'is_vendor',
+      ],
+    })
+      .then((user) => {
+        console.log(JSON.stringify(user, null, 4));
+        if (!user.is_vendor) {
+          return res.status(400).json({ ok: 0, message: '非賣家' });
+        }
+
+        Product.findAndCountAll({
+          where: {
+            UserId: id,
+            status,
+          },
+          include: [
+            {
+              model: Product_category,
+              attributes: ['id', 'name'],
+            },
+            {
+              model: User,
+              attributes: ['id', 'username', 'nickname'],
+            },
+          ],
+          limit: _limit ? parseInt(_limit) : 10,
+          offset: offset,
+          order: [[sort, order]],
+        })
+          .then((products) => {
+            // console.log(JSON.stringify(products, null, 4));
+            if (products.count === 0) {
+              return res.status(400).json({ ok: 0, message: '暫無商品' });
+            }
+
+            if (products.rows.length !== 0) {
+              return res.status(200).json({
+                ok: 1,
+                data: {
+                  vendorInfo: user,
+                  count: products.count,
+                  products: products.rows,
+                },
+              });
+            }
+            return res.status(400).json({ ok: 0, message: '無更多商品' });
+          })
+          .catch((err) => {
+            return res.status(500).json({ ok: 0, message: err });
+          });
+      })
+      .catch((err) => {
+        return res.status(500).json({ ok: 0, message: err });
+      });
+  },
+
+  // 搜尋關鍵字商品，中英都可
+  searchProduct: (req, res) => {
+    let { _page, _limit, _sort, _status, _order, _keyword } = req.query;
+    if (!_keyword) {
+      return res.status(400).json({ ok: 0, message: 'keyword is required' });
+    }
+    const page = Number(_page) || 1;
+    let offset = 0;
+    if (page) {
+      offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
+    }
+    const sort = _sort || 'id';
+    const order = _order || 'ASC';
+    let status = _status || 'passed';
+
     status = statusSwitch(status);
 
     Product.findAndCountAll({
       where: {
-        UserId: id,
         status,
+        name: {
+          [Op.like]: `%${_keyword}%`,
+        },
       },
       include: [
         {
@@ -176,13 +288,17 @@ const productController = {
           attributes: ['id', 'username', 'nickname'],
         },
       ],
-      limit: productLimit,
+      limit: _limit ? parseInt(_limit) : 10,
       offset: offset,
       order: [[sort, order]],
     })
       .then((products) => {
-        //console.log(JSON.stringify(products, null, 4));
+        if (products.count === 0) {
+          return res.status(400).json({ ok: 0, message: '查無此商品' });
+        }
+
         if (products.rows.length !== 0) {
+          // console.log(JSON.stringify(products, null, 4));
           return res.status(200).json({
             ok: 1,
             data: {
@@ -192,58 +308,6 @@ const productController = {
           });
         }
         return res.status(400).json({ ok: 0, message: '無更多商品' });
-      })
-      .catch((err) => {
-        return res.status(500).json({ ok: 0, message: err });
-      });
-  },
-
-  // 搜尋關鍵字商品，中英都可
-  searchProduct: (req, res) => {
-    let keyword = req.query._keyword;
-    const page = Number(req.query._page) || 1;
-    let offset = 0;
-    if (page) {
-      offset = (page - 1) * productLimit;
-    }
-    const sort = req.query._sort || 'id';
-    const order = req.query._order || 'ASC';
-    if (!keyword)
-      return res.status(400).json({ ok: 0, message: 'keyword is required' });
-
-    let status = req.query._status || 'passed';
-    status = statusSwitch(status);
-
-    Product.findAll({
-      where: {
-        status,
-        name: {
-          [Op.like]: `%${keyword}%`,
-        },
-      },
-      include: [
-        {
-          model: Product_category,
-          attributes: ['id', 'name'],
-        },
-        {
-          model: User,
-          attributes: ['id', 'username', 'nickname'],
-        },
-      ],
-      limit: productLimit,
-      offset: offset,
-      order: [[sort, order]],
-    })
-      .then((products) => {
-        if (products.length !== 0) {
-          // console.log(JSON.stringify(products, null, 4));
-          return res.status(200).json({ ok: 1, data: products });
-        }
-        if (products.length === 0 && page !== 1) {
-          return res.status(400).json({ ok: 0, message: '無更多商品' });
-        }
-        return res.status(400).json({ ok: 0, message: '查無此商品' });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
@@ -263,7 +327,18 @@ const productController = {
         },
         {
           model: User,
-          attributes: ['id', 'username', 'nickname'],
+          attributes: [
+            'id',
+            'username',
+            'nickname',
+            'email',
+            'address',
+            'announcement',
+            'account',
+            'socialmedia_id',
+            'avatar_url',
+            'banner_url',
+          ],
         },
       ],
     })
@@ -496,7 +571,10 @@ const productController = {
       order: [[sort, order]],
     })
       .then((products) => {
-        if (products.length !== 0) {
+        if (products.count === 0) {
+          return res.status(400).json({ ok: 0, message: '暫無商品' });
+        }
+        if (products.rows.length !== 0) {
           // console.log(JSON.stringify(products, null, 4));
           return res.status(200).json({
             ok: 1,
@@ -506,7 +584,7 @@ const productController = {
             },
           });
         }
-        return res.status(400).json({ ok: 0, message: '暫無商品' });
+        return res.status(400).json({ ok: 0, message: '無更多商品' });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
@@ -550,7 +628,10 @@ const productController = {
       order: [[sort, order]],
     })
       .then((products) => {
-        if (products.length !== 0) {
+        if (products.count === 0) {
+          return res.status(400).json({ ok: 0, message: '查無此商品' });
+        }
+        if (products.rows.length !== 0) {
           // console.log(JSON.stringify(products, null, 4));
           return res.status(200).json({
             ok: 1,
@@ -560,10 +641,7 @@ const productController = {
             },
           });
         }
-        if (products.length === 0 && page !== 1) {
-          return res.status(400).json({ ok: 0, message: '無更多商品' });
-        }
-        return res.status(400).json({ ok: 0, message: '查無此商品' });
+        return res.status(400).json({ ok: 0, message: '無更多商品' });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
