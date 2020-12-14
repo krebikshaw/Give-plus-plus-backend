@@ -32,18 +32,24 @@ function getCartItems(cartItems) {
       quantity: cartItem.product_quantity,
     };
   });
-  const groupData = (d) => {
-    let g = Object.entries(
-      d.reduce(
-        (r, c) => ((r[c.sellerName] = [...(r[c.sellerName] || []), c]), r),
-        {}
-      )
-    );
-    console.log(g);
-    return g.reduce(
-      (r, c) => (r.data.push({ sellerName: c[0], cartDetail: c[1] }), r),
-      { ok: 1, data: [] }
-    );
+  const groupData = (originalCartItems) => {
+    const groupBySellerName = originalCartItems.reduce((acc, cartItem) => {
+      if (!acc[cartItem.sellerName]) {
+        acc[cartItem.sellerName] = [];
+      }
+      acc[cartItem.sellerName].push(cartItem);
+      return acc;
+    }, {});
+    const carts = Object.entries(groupBySellerName);
+    const data = carts.reduce((acc, cart) => {
+      const item = {
+        sellerName: cart[0],
+        cartDetail: cart[1],
+      };
+      acc.push(item);
+      return acc;
+    }, []);
+    return data;
   };
   return groupData(originalCartItems);
 }
@@ -78,7 +84,9 @@ const cartController = {
       ],
     })
       // send updated data response to front end.
-      .then((updatedItems) => res.status(200).json(getCartItems(updatedItems)))
+      .then((updatedItems) =>
+        res.status(200).json({ ok: 1, data: getCartItems(updatedItems) })
+      )
       .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
   },
 
