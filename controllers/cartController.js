@@ -29,7 +29,8 @@ function getCartItems(cartItems) {
       productName: cartItem.Product.name,
       pictureUrl: cartItem.Product.picture_url,
       price: cartItem.Product.price,
-      quantity: cartItem.product_quantity,
+      cartQuantity: cartItem.product_quantity,
+      productQuantity: cartItem.Product.quantity,
     };
   });
   const groupData = (originalCartItems) => {
