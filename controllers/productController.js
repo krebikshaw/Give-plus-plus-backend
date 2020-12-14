@@ -203,7 +203,7 @@ const productController = {
       ],
     })
       .then((user) => {
-        console.log(JSON.stringify(user, null, 4));
+        //console.log(JSON.stringify(user, null, 4));
         if (!user.is_vendor) {
           return res.status(400).json({ ok: 0, message: '非賣家' });
         }
@@ -343,10 +343,36 @@ const productController = {
       ],
     })
       .then((product) => {
-        // console.log(JSON.stringify(product, null, 4));
-        if (!product)
+        //console.log(JSON.stringify(product, null, 4));
+        if (!product) {
           return res.status(400).json({ ok: 0, message: '查無此商品' });
-        return res.status(200).json({ ok: 1, data: product });
+        }
+        return res.status(200).json({
+          ok: 1,
+          data: {
+            category: product.Product_category,
+            vendorInfo: product.User,
+            product: {
+              id: product.id,
+              name: product.name,
+              picture_url: product.picture_url,
+              info: product.info,
+              price: product.price,
+              quantity: product.quantity,
+              delivery: product.delivery,
+              delivery_location: product.delivery_location,
+              delivery_time: product.delivery_time,
+              payment_method: product.payment_method,
+              remark: product.remark,
+              status: product.status,
+              deletedAt: product.deletedAt,
+              createdAt: product.createdAt,
+              updatedAt: product.updatedAt,
+              ProductCategoryId: product.ProductCategoryId,
+              UserId: product.UserId,
+            },
+          },
+        });
       })
       .catch((err) => {
         return res.status(500).json({ ok: 0, message: err });
