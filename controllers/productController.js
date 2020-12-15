@@ -350,7 +350,7 @@ const productController = {
         return res.status(200).json({
           ok: 1,
           data: {
-            category: product.Product_category,
+            category: product.Product_category.name,
             vendorInfo: product.User,
             product: {
               id: product.id,
