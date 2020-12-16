@@ -80,7 +80,7 @@ const orderController = {
   cancelOrder: (req, res) => {
     let id = req.user.id;
     const {
-      cancel_reason, // 備註
+      cancelReason, // 備註
     } = req.body;
     Order.findByPk(req.params.id)
       .then((order) => {
@@ -89,7 +89,7 @@ const orderController = {
           return order
             .update({
               is_canceled: 1,
-              cancel_reason,
+              cancelReason,
             })
             .then(() => {
               res.status(200).json({ ok: 1, message: "success" });
