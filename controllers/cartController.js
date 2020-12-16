@@ -15,7 +15,7 @@ async function updateCartItems(cartItems) {
       .then(() => {
         return;
       })
-      .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
+      .catch((err) => res.status(400).json({ ok: 0, message: err }));
   }
 }
 
@@ -70,7 +70,7 @@ const cartController = {
 
       // if product is not enough, let status become empty.
       .then((items) => updateCartItems(items))
-      .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
+      .catch((err) => res.status(400).json({ ok: 0, message: err }));
 
     // only find cart item whose is_empty is false.
     Cart_items.findAll({
@@ -88,7 +88,7 @@ const cartController = {
       .then((updatedItems) =>
         res.status(200).json({ ok: 1, data: getCartItems(updatedItems) })
       )
-      .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
+      .catch((err) => res.status(400).json({ ok: 0, message: err }));
   },
 
   addItem: async (req, res) => {
@@ -137,7 +137,7 @@ const cartController = {
         product_quantity: quantity,
       })
         .then(() => res.status(200).json(successMessage))
-        .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
+        .catch((err) => res.status(400).json({ ok: 0, message: err }));
     } else {
       // count the existed cart item quantity + the quantity user wants to add.
       const cartItemQuantity =
@@ -151,7 +151,7 @@ const cartController = {
       existedCartItem
         .update({ product_quantity: cartItemQuantity })
         .then(() => res.status(200).json(successMessage))
-        .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
+        .catch((err) => res.status(400).json({ ok: 0, message: err }));
     }
   },
 
@@ -185,7 +185,7 @@ const cartController = {
     existedCartItem
       .update({ product_quantity: quantity })
       .then(() => res.status(200).json(successMessage))
-      .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
+      .catch((err) => res.status(400).json({ ok: 0, message: err }));
   },
 
   deleteItem: async (req, res) => {
@@ -201,7 +201,7 @@ const cartController = {
     existedCartItem
       .destroy()
       .then(() => res.status(200).json(successMessage))
-      .catch((res, err) => res.status(400).json({ ok: 0, message: err }));
+      .catch((err) => res.status(400).json({ ok: 0, message: err }));
   },
 
   deleteItemBySeller: async (req, res) => {
@@ -218,7 +218,7 @@ const cartController = {
       async (cartItem) =>
         await cartItem
           .destroy()
-          .catch((res, err) => res.status(400).json({ ok: 0, message: err }))
+          .catch((err) => res.status(400).json({ ok: 0, message: err }))
     );
 
     return res.status(200).json(successMessage);
