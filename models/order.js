@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       total_quantity: DataTypes.INTEGER,
       shipping: DataTypes.INTEGER,
       total_amount: DataTypes.INTEGER,
-      content: DataTypes.STRING,
+      cancel_reason: DataTypes.STRING,
       is_paid: DataTypes.INTEGER,
       is_sent: DataTypes.BOOLEAN,
       is_canceled: DataTypes.BOOLEAN,

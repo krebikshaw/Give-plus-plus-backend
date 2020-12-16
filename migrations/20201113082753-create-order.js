@@ -56,7 +56,7 @@ module.exports = {
       total_amount: {
         type: Sequelize.INTEGER
       },
-      content: {
+      cancel_reason: {
         type: Sequelize.STRING
       },
       is_paid: {
