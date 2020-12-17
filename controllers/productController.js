@@ -456,6 +456,7 @@ const productController = {
 
   //賣家可編輯自己的商品
   editProduct: (req, res) => {
+    const UserId = req.user.id;
     const id = req.params.id;
     const {
       ProductCategoryId,
