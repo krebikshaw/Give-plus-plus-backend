@@ -174,9 +174,8 @@ const cartController = {
       where: { id: existedCartItem.ProductId },
     }).then((product) => product.quantity);
 
-    const cartItemQuantity =
-      parseInt(existedCartItem.product_quantity) + parseInt(quantity);
-
+    const cartItemQuantity = parseInt(quantity);
+    
     // if the count result is more than product quantity, return 400 response.
     if (cartItemQuantity > productQuantity)
       return res.status(400).json(notEnoughMessage);
