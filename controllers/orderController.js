@@ -231,6 +231,12 @@ const orderController = {
       const newQuantity = cartItemData.map(
         (data) => Object.values(data)[12] - Object.values(data)[5]
       );
+      const totalQuantity = cartItemData
+        .map((data) => Object.values(data)[5])
+        .reduce((accumulator, data) => {
+          return accumulator + data;
+        });
+      console.log(totalQuantity);
       const totalAmount = cartItemData.map(
         (data) => Object.values(data)[5] * Object.values(data)[6]
       );
@@ -261,6 +267,7 @@ const orderController = {
         order_number: orderNumber,
         seller_address: cartItemData[0].sellerAddress,
         total_amount: totalAmountData,
+        total_quantity: totalQuantity,
       }).then((order) => {
         let OrderId = order.id;
         console.log(order);
@@ -280,25 +287,25 @@ const orderController = {
                 { quantity: newQuantity },
                 { where: { id: { [Op.in]: ProductIdList } } }
               ).then((data) => data)}*/
-                // 同時把下單的購物車商品刪掉
-                Cart_items.destroy({
-                  where: {
-                    CartId: req.user.id,
-                    ProductId: { [Op.in]: ProductIdList },
-                    product_quantity: { [Op.in]: productQuantityList },
-                  },
-                })
-                  .then(() => {
-                    return res
-                      .status(200)
-                      .json({ ok: 1, orderNumber: orderNumber });
-                  })
-                  .catch((err) => {
-                    return res.status(500).json(failToCreateNewOrder);
-                  });
+            // 同時把下單的購物車商品刪掉
+            Cart_items.destroy({
+              where: {
+                CartId: req.user.id,
+                ProductId: { [Op.in]: ProductIdList },
+                product_quantity: { [Op.in]: productQuantityList },
+              },
+            })
+              .then(() => {
+                return res
+                  .status(200)
+                  .json({ ok: 1, orderNumber: orderNumber });
+              })
+              .catch((err) => {
+                return res.status(500).json(failToCreateNewOrder);
               });
           });
         });
+      });
       });
   },
 };
