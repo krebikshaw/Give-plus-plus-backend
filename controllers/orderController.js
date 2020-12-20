@@ -45,7 +45,7 @@ const orderController = {
           },
         ],
         attributes: {
-          exclude: [ "updatedAt", "product_category_id"],
+          exclude: ["updatedAt", "product_category_id"],
         },
       })
         .then((product) => {
@@ -79,13 +79,21 @@ const orderController = {
   // 訂單取消
   cancelOrder: (req, res) => {
     let id = req.user.id;
+    const {
+      cancelReason, // 備註
+    } = req.body;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (!order) return res.status(400).json(noOrderMessage);
         if (id === order.client_id || id === order.seller_id) {
-          return order.update({ is_canceled: 1 }).then(() => {
-            res.status(200).json({ ok: 1, message: "success" });
-          });
+          return order
+            .update({
+              is_canceled: 1,
+              cancelReason,
+            })
+            .then(() => {
+              res.status(200).json({ ok: 1, message: "success" });
+            });
         } else {
           return res.status(400).json(failToCancelOrder);
         }
@@ -194,6 +202,7 @@ const orderController = {
         },
       ],
     }).then((cartItems) => {
+      console.log(cartItems);
       if (!cartItems)
         return res.status(400).json({ ok: 0, message: "invalid data" });
       //console.log(cartItems)
@@ -218,18 +227,33 @@ const orderController = {
           origin_quantity: cartItem.Product.quantity,
         };
       });
-      //console.log(cartItemData);
+      console.log(cartItemData);
       const newQuantity = cartItemData.map(
         (data) => Object.values(data)[12] - Object.values(data)[5]
       );
+      const totalQuantity = cartItemData
+        .map((data) => Object.values(data)[5])
+        .reduce((accumulator, data) => {
+          return accumulator + data;
+        });
+      console.log(totalQuantity);
+      const totalAmount = cartItemData.map(
+        (data) => Object.values(data)[5] * Object.values(data)[6]
+      );
+      const totalAmountData = totalAmount.reduce((accumulator, totalAmount) => {
+        return accumulator + totalAmount;
+      });
+      console.log(totalAmountData);
+
+      console.log("totalAmount:", totalAmount);
       //console.log(newQuantity)
       let date = new Date();
       let orderNumber =
         date.getFullYear().toString() +
         (date.getMonth() + 1).toString() +
-        ((date.getDate()<10 ? '0' : '')+ date.getDate()).toString() +
+        ((date.getDate() < 10 ? "0" : "") + date.getDate()).toString() +
         Math.round(Math.random() * 10000).toString();
-      console.log(orderNumber)
+      console.log(orderNumber);
       // 新增訂單資料
       Order.create({
         UserId: req.user.id,
@@ -242,9 +266,11 @@ const orderController = {
         seller_email: cartItemData[0].sellerEmail,
         order_number: orderNumber,
         seller_address: cartItemData[0].sellerAddress,
+        total_amount: totalAmountData,
+        total_quantity: totalQuantity,
       }).then((order) => {
         let OrderId = order.id;
-        console.log(order)
+        console.log(order);
         // 新增訂單商品資料
         Order_items.bulkCreate(cartItemData, {
           returning: true,
@@ -255,33 +281,32 @@ const orderController = {
             { OrderId: OrderId },
             { where: { productId: { [Op.in]: ProductIdList } } }
           ).then((orderItems) => {
-            // 同時把商品的數量減少
-            for (let i = 0; i < newQuantity.length; i++) {
+            /*// 同時把商品的數量減少
+            for(let i=0;i<newQuantity.length;i++){
               Product.update(
-                { quantity: newQuantity[i] },
-                { where: { id: ProductIdList[i] } }
-              ).then(() => {
-                // 同時把下單的購物車商品刪掉
-                Cart_items.findAll({
-                  where: {
-                    CartId: req.user.id,
-                    ProductId: { [Op.in]: ProductIdList },
-                    product_quantity: { [Op.in]: productQuantityList },
-                  },
-                })
-                  .then((cartItems) => cartItems[i].destroy())
-                  .then(() => {
-                    return res
-                      .status(200)
-                      .json({ ok: 1, orderNumber: orderNumber });
-                  })
-                  .catch((err) => res.status(400).json(failToCreateNewOrder));
+                { quantity: newQuantity },
+                { where: { id: { [Op.in]: ProductIdList } } }
+              ).then((data) => data)}*/
+            // 同時把下單的購物車商品刪掉
+            Cart_items.destroy({
+              where: {
+                CartId: req.user.id,
+                ProductId: { [Op.in]: ProductIdList },
+                product_quantity: { [Op.in]: productQuantityList },
+              },
+            })
+              .then(() => {
+                return res
+                  .status(200)
+                  .json({ ok: 1, orderNumber: orderNumber });
+              })
+              .catch((err) => {
+                return res.status(500).json(failToCreateNewOrder);
               });
-            }
           });
         });
       });
-    });
+      });
   },
 };
 

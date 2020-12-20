@@ -18,7 +18,7 @@ module.exports = {
         total_quantity: 1,
         shipping: "面交",
         total_amount: 20000,
-        content: "面交時付款",
+        cancelReason: "面交時付款",
         is_paid: 0,
         is_sent: 0,
         is_canceled: 0,

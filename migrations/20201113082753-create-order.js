@@ -1,15 +1,15 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Orders', {
+    await queryInterface.createTable("Orders", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       order_number: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       UserId: {
         allowNull: false,
@@ -17,74 +17,74 @@ module.exports = {
       },
       seller_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       seller_name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       seller_email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       seller_phone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       seller_address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       client_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       client_name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       client_email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       client_phone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       client_address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       total_quantity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       shipping: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       total_amount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      content: {
-        type: Sequelize.STRING
+      cancelReason: {
+        type: Sequelize.STRING,
       },
       is_paid: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       is_sent: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       is_canceled: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       is_completed: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       is_refunded: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       deletedAt: {
         type: Sequelize.DATE,
-      }
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
