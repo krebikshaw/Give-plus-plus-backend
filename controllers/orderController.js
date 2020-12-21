@@ -1,12 +1,10 @@
 const db = require("../models");
 const Order = db.Order;
-const { Op, Sequelize, bulkCreate } = require("sequelize");
+const { Op } = require("sequelize");
 const { Product, User, Cart, Order_items, Cart_items } = db;
-const { checkToken } = require("../middlewares/auth");
 const { sequelize } = require("../models");
 
 const noOrderMessage = { ok: 0, message: "there is no order" };
-const noOrderItemsMessage = { ok: 0, message: "there is no orderItems data" };
 const failDeleteOrderItems = { ok: 0, message: "fail to delete OrderItems" };
 const failToCancelOrder = { ok: 0, message: "fail to cancel Order" };
 const failToCompleteOrder = { ok: 0, message: "fail to complete Order" };
@@ -252,7 +250,7 @@ const orderController = {
         ).then((order) => order.id);
 
         if (!orderId) {
-          return res.status(400).json({ ok: 0, message: "create order fail." });
+          return res.status(400).json(failToCreateNewOrder);
         }
 
         // 檢查與更新賣家商品庫存
@@ -301,7 +299,7 @@ const orderController = {
       });
       return res.status(200).json({ ok: 1, message: "success" });
     } catch (err) {
-      return res.status(200).json({ ok: 0, message: "fail" });
+      return res.status(200).json(failToCreateNewOrder);
     }
   },
 };
