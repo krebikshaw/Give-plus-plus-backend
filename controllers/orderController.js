@@ -1,7 +1,7 @@
 const db = require("../models");
 const Order = db.Order;
 const { Op } = require("sequelize");
-const { Product, User, Cart, Order_items, Cart_items } = db;
+const { Product, User, Order_items, Cart_items } = db;
 const { sequelize } = require("../models");
 
 const noOrderMessage = { ok: 0, message: "there is no order" };
@@ -224,6 +224,7 @@ const orderController = {
       })
     );
 
+    // 如果沒有商品資料就回傳錯誤訊息
     if (!productsData) {
       return res.status(400).json({ ok: 0, message: "no product" });
     }
@@ -249,18 +250,19 @@ const orderController = {
           { transaction: t }
         ).then((order) => order.id);
 
+        // 如果建立訂單失敗沒拿到 orderId，就回傳錯誤訊息
         if (!orderId) {
           return res.status(400).json(failToCreateNewOrder);
         }
 
-        // 檢查與更新賣家商品庫存
+        // 對準備要下單的商品，逐一檢查與更新賣家商品庫存
         await Promise.all(
           productsData.map((productData) => {
-            let stockQuantity = productData.productOriginQuantity;
-            let cartQuantity = productData.product_quantity;
+            let stockQuantity = productData.productOriginQuantity; // 賣家的庫存數量
+            let cartQuantity = productData.product_quantity; // 準備要買的數量
             // 數量不夠賣，就回傳錯誤跳出 transaction
             if (stockQuantity - cartQuantity < 0) throw new Error();
-
+            // 把要買的商品數量從賣家商品的數量中減去
             Product.update(
               { quantity: stockQuantity - cartQuantity },
               { where: { id: productData.ProductId } },
@@ -269,7 +271,7 @@ const orderController = {
           })
         );
 
-        // 數量足夠就新增訂單商品
+        // 數量足夠就批量新增訂單商品
         await Order_items.bulkCreate(
           productsData,
           {
@@ -279,6 +281,7 @@ const orderController = {
           { transaction: t }
         ).then(async (orderItems) => {
           const orderItemsIdList = orderItems.map((item) => item.id);
+          // 把先前成立訂單的訂單 id 寫進 order items 的 OrderId 欄位裡
           await Order_items.update(
             { OrderId: orderId },
             { where: { id: { [Op.in]: orderItemsIdList } } },
