@@ -105,13 +105,21 @@ const orderController = {
   // 訂單取消
   cancelOrder: (req, res) => {
     let id = req.user.id;
+    const {
+      cancelReason, // 備註
+    } = req.body;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (!order) return res.status(400).json(noOrderMessage);
         if (id === order.client_id || id === order.seller_id) {
-          return order.update({ is_canceled: 1 }).then(() => {
-            res.status(200).json({ ok: 1, message: "success" });
-          });
+          return order
+            .update({
+              is_canceled: 1,
+              cancelReason,
+            })
+            .then(() => {
+              res.status(200).json({ ok: 1, message: "success" });
+            });
         } else {
           return res.status(400).json(failToCancelOrder);
         }
@@ -204,6 +212,7 @@ const orderController = {
       where: {
         id: { [Op.in]: ProductIdList },
       },
+
       include: {
         model: User,
         right: true, // right join
@@ -339,6 +348,7 @@ const orderController = {
     res.status(200).json({ ok: 1, orderNumber: orderNumber });
   }
  
+
 };
 
 module.exports = orderController;
