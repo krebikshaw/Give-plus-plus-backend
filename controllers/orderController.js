@@ -13,7 +13,33 @@ const failToSendOrder = { ok: 0, message: "fail to send Order" };
 const failToPaidOrder = { ok: 0, message: "fail to paid Order" };
 const failToCreateNewOrder = { ok: 0, message: "fail to create new Order" };
 const successMessage = { ok: 1, message: "success" };
-
+// 計算訂單總金額
+function countTotalAmount(cartItemData, requestData) {
+  const totalAmount = cartItemData.map((data) => {
+    let rightIndex = null;
+    requestData.map((product, index) => {
+      if (product.ProductId === data.ProductId) {
+        rightIndex = index;
+      }
+    
+    })
+    return requestData[rightIndex].product_quantity * Object.values(data)[6];
+  });
+  const totalAmountData = totalAmount.reduce((accumulator, totalAmount) => {
+    return accumulator + totalAmount;
+  });
+  return totalAmountData;
+}
+ // 計算訂單編號
+function generateOrderNumber() {
+  const date = new Date();
+  const orderNumber =
+    date.getFullYear().toString() +
+    (date.getMonth() + 1).toString() +
+    ((date.getDate() < 10 ? "0" : "") + date.getDate()).toString() +
+    Math.round(Math.random() * 10000).toString();
+  return orderNumber;
+}
 const orderController = {
   // 取得全部訂單列表
   getAllOrders: (req, res) => {
@@ -45,7 +71,7 @@ const orderController = {
           },
         ],
         attributes: {
-          exclude: [ "updatedAt", "product_category_id"],
+          exclude: ["updatedAt", "product_category_id"],
         },
       })
         .then((product) => {
@@ -165,124 +191,154 @@ const orderController = {
       .catch((err) => res.status(400).json(noOrderMessage));
   },
   // 成立訂單
-  newOrder: (req, res) => {
-    // 購買商品、資訊
+  newOrder: async (req, res) => {
+    // 先從req.body拿productId,cart_quantity,sellerId
     const { product_quantity, ProductId, UserId } = req.body;
-    if (!req.body) {
-      return res.status(400).send();
-    }
-    //console.log(req.body)
-    const productQuantityList = req.body.map((data) => Object.values(data)[0]);
-    //console.log(productQuantityList)
+    const request_data = req.body;
+    const cartQuantityList = req.body.map((data) => Object.values(data)[0]);
     const ProductIdList = req.body.map((data) => Object.values(data)[1]);
-    //console.log(ProductIdList)
-    // 依據使用者下單的商品與數量把資料從購物車撈出來
-    Cart_items.findAll({
+    const sellerId = req.body.map((data) => Object.values(data)[2])[0];
+    console.log(cartQuantityList);
+    // 用productId findALL 拿到商品的金額,商品名稱等商品詳細資訊,再用關聯賣家sellerId 拿到賣家的賣家的姓名,email跟地址
+    const productsData = await Product.findAll({
       where: {
-        CartId: req.user.id,
-        ProductId: { [Op.in]: ProductIdList },
-        product_quantity: { [Op.in]: productQuantityList },
+        id: { [Op.in]: ProductIdList },
       },
-      include: [
-        {
-          model: Product,
-          right: true, // right join
-          include: {
-            model: User,
-            right: true, // right join
-          },
-        },
-      ],
-    }).then((cartItems) => {
-      if (!cartItems)
-        return res.status(400).json({ ok: 0, message: "invalid data" });
-      //console.log(cartItems)
-      let cartItemData = cartItems.map((cartItem) => {
-        if (cartItem.Product.quantity < cartItem.product_quantity)
-          return res
-            .status(400)
-            .json({ ok: 0, message: "product quantity is not enough" });
+      include: {
+        model: User,
+        right: true, // right join
+      },
+    }).then((products) => {
+      return products.map((product) => {
         return {
-          ProductId: cartItem.Product.id,
-          product_name: cartItem.Product.name,
-          product_category_id: cartItem.Product.ProductCategoryId,
-          product_picture_url: cartItem.Product.picture_url,
-          product_info: cartItem.Product.info,
-          product_quantity: cartItem.product_quantity,
-          product_price: cartItem.Product.price,
-          product_delivery: cartItem.Product.delivery,
-          sellerId: cartItem.UserId,
-          sellerName: cartItem.Product.User.username,
-          sellerEmail: cartItem.Product.User.email,
-          sellerAddress: cartItem.Product.User.address,
-          origin_quantity: cartItem.Product.quantity,
+          ProductId: product.id,
+          product_name: product.name,
+          product_category_id: product.ProductCategoryId,
+          product_picture_url: product.picture_url,
+          product_info: product.info,
+          product_quantity: product.quantity,
+          product_price: product.price,
+          product_delivery: product.delivery,
+          seller_name: product.User.username,
+          seller_email: product.User.email,
+          seller_address: product.User.address,
         };
       });
-      //console.log(cartItemData);
-      const newQuantity = cartItemData.map(
-        (data) => Object.values(data)[12] - Object.values(data)[5]
-      );
-      //console.log(newQuantity)
-      let date = new Date();
-      let orderNumber =
-        date.getFullYear().toString() +
-        (date.getMonth() + 1).toString() +
-        ((date.getDate()<10 ? '0' : '')+ date.getDate()).toString() +
-        Math.round(Math.random() * 10000).toString();
-      console.log(orderNumber)
-      // 新增訂單資料
-      Order.create({
-        UserId: req.user.id,
-        client_id: req.user.id,
-        client_name: req.user.username,
-        client_email: req.user.email,
-        client_address: req.user.address,
-        seller_id: cartItemData[0].sellerId,
-        seller_name: cartItemData[0].sellerName,
-        seller_email: cartItemData[0].sellerEmail,
-        order_number: orderNumber,
-        seller_address: cartItemData[0].sellerAddress,
-      }).then((order) => {
-        let OrderId = order.id;
-        console.log(order)
-        // 新增訂單商品資料
-        Order_items.bulkCreate(cartItemData, {
-          returning: true,
-          updateOnDuplicate: ["OrderId"],
-        }).then((orderItems) => {
-          //console.log(orderItems)
-          Order_items.update(
-            { OrderId: OrderId },
-            { where: { productId: { [Op.in]: ProductIdList } } }
-          ).then((orderItems) => {
-            // 同時把商品的數量減少
-            for (let i = 0; i < newQuantity.length; i++) {
-              Product.update(
-                { quantity: newQuantity[i] },
-                { where: { id: ProductIdList[i] } }
-              ).then(() => {
-                // 同時把下單的購物車商品刪掉
-                Cart_items.findAll({
-                  where: {
-                    CartId: req.user.id,
-                    ProductId: { [Op.in]: ProductIdList },
-                    product_quantity: { [Op.in]: productQuantityList },
-                  },
-                })
-                  .then((cartItems) => cartItems[i].destroy())
-                  .then(() => {
-                    return res
-                      .status(200)
-                      .json({ ok: 1, orderNumber: orderNumber });
-                  })
-                  .catch((err) => res.status(400).json(failToCreateNewOrder));
-              });
-            }
-          });
-        });
-      });
     });
-  },
+    const productQuantityList = productsData.map(
+      (data) => Object.values(data)[5]
+    );
+    console.log(productQuantityList);
+    if (!productsData) {
+      return res.status(400).json({ ok: 0, message: "no product" });
+    }
+    const orderNumber = generateOrderNumber();
+
+    // 新增到order
+    const IsOrderSuccess = await Order.create({
+      UserId: req.user.id,
+      client_id: req.user.id,
+      client_name: req.user.username,
+      client_email: req.user.email,
+      client_address: req.user.address,
+      seller_id: sellerId,
+      seller_name: productsData[0].seller_name,
+      seller_email: productsData[0].seller_email,
+      seller_address: productsData[0].seller_address,
+      order_number: orderNumber,
+      total_amount: countTotalAmount(productsData, request_data),
+
+    });
+
+    // 新增到order item
+    const isOrderItemSuccess = await Order_items.bulkCreate(productsData, {
+      returning: true,
+      updateOnDuplicate: ["OrderId"],
+    }).then(async (order) => {
+      let OrderId = order[0].id;
+
+      await Order_items.update(
+        { 
+          OrderId: OrderId,
+        },
+        { where: { ProductId: { [Op.in]: ProductIdList } } }
+      );
+    });
+
+    const IsOrderMade = await Promise.all([
+      IsOrderSuccess,
+      isOrderItemSuccess,
+    ]).then(() => true);
+
+    // 更新賣家商品數量
+    if (!IsOrderMade) {
+      return res.status(400).json({ ok: 0, message: "fail to create order" });
+    }
+
+    const productUpdate = async (id) => {
+      let oldProductIndex = null;
+      let cartProductIndex = null;
+      request_data.map((product, index) => {
+        if (product.ProductId === id) {
+          cartProductIndex = index;
+        }
+      });
+      productsData.map((product, index) => {
+        if (product.ProductId === id) {
+          oldProductIndex = index;
+        }
+      });
+
+      await Product.update(
+        {
+          quantity:
+            productsData[oldProductIndex].product_quantity -
+            request_data[cartProductIndex].product_quantity,
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+    };
+
+    let IsProductsUpdate = await Promise.all(
+      Array.from(Array(request_data.length).keys()).map((i) => {
+        return productUpdate(request_data[i].ProductId);
+      })
+    ).then(() => {
+      return true;
+    });
+
+    if (!IsProductsUpdate) {
+      return res.status(400).json({ ok: 0, message: "fail to create order" });
+    }
+
+    // 把購物車商品刪掉
+    const deleteCartItem = async (id) => {
+      await Cart_items.destroy({
+        where: {
+          ProductId: id,
+        },
+      });
+    };
+
+    let IsCartItemsDestroy = await Promise.all(
+      Array.from(Array(request_data.length).keys()).map((i) => {
+        return deleteCartItem(request_data[i].ProductId);
+      })
+    ).then(() => {
+      return true;
+    });
+
+     if (!IsCartItemsDestroy) {
+       return res.status(400).json({ ok: 0, message: "fail to create order" });
+     }
+
+    res.status(200).json({ ok: 1, orderNumber: orderNumber });
+  }
+ 
 };
 
 module.exports = orderController;
