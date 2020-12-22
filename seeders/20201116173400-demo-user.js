@@ -21,7 +21,7 @@ module.exports = {
         avatar_url:
           'https://i.pinimg.com/236x/36/9a/8d/369a8d520b7a84465e88de3b0dda45b8.jpg',
         banner_url:
-          'https://i.pinimg.com/236x/6d/22/56/6d22560a5a02ba11284baef8f1f70a93.jpg',
+          'https://images.pexels.com/photos/4328961/pexels-photo-4328961.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         status: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -44,7 +44,7 @@ module.exports = {
         avatar_url:
           'https://i.pinimg.com/236x/c9/e4/01/c9e401be5a0fb99adcf25e9c11e1e965.jpg',
         banner_url:
-          'https://i.pinimg.com/236x/a3/b5/ad/a3b5ad41309942e9f9e1ce404b1ca758.jpg',
+          'https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         status: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -67,7 +67,7 @@ module.exports = {
         avatar_url:
           'https://i.pinimg.com/236x/98/82/79/98827997e6d52ce37cf31d29ff6b35a0.jpg',
         banner_url:
-          'https://i.pinimg.com/236x/df/93/cb/df93cbc9502f061bce86ec18f169cdb7.jpg',
+          'https://images.pexels.com/photos/1269968/pexels-photo-1269968.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         status: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -90,7 +90,7 @@ module.exports = {
         avatar_url:
           'https://i.pinimg.com/236x/5d/eb/4b/5deb4b44d5254183cf518aa3dead1d52.jpg',
         banner_url:
-          'https://i.pinimg.com/236x/bd/57/93/bd579364fb25a4802f6e11d7f5d82fc9.jpg',
+          'https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         status: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -113,7 +113,7 @@ module.exports = {
         avatar_url:
           'https://i.pinimg.com/236x/4a/08/d0/4a08d0747ceb46ca019e0b46c1a63378.jpg',
         banner_url:
-          'https://i.pinimg.com/236x/35/ae/8a/35ae8ad7ae530c6f874dc063de1a3933.jpg',
+          'https://images.pexels.com/photos/3598435/pexels-photo-3598435.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         status: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -462,6 +462,28 @@ module.exports = {
         id_card_no: 'A121212555',
         avatar_url: 'https://i.imgur.com/gg2WGbz.jpg',
         banner_url: 'https://i.imgur.com/Z3Y6iRG.jpg',
+        status: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        username: 'Admin01',
+        password:
+          '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
+        nickname: 'Give++ 管理員',
+        email: 'admin@gmail.com',
+        address: '天庭',
+        is_admin: 1,
+        is_vendor: 1,
+        announcement: `不守規矩會被停權唷！`,
+        account: '1234-5678-6666',
+        socialmedia_id: 'https://i.imgur.com/fD59hgy.png',
+        birthday: '1999-11-02 23:32:56',
+        id_card_no: 'A121212555',
+        avatar_url:
+          'https://i.pinimg.com/236x/6d/df/22/6ddf22da1b3e6a5a0fa05dbfaf2fd741.jpg',
+        banner_url:
+          'https://images.pexels.com/photos/5278835/pexels-photo-5278835.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         status: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
