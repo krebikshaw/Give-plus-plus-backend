@@ -266,7 +266,24 @@ const userController = {
     })
       .then(user => {
         if (!user) return res.status(500).json(userNotFoundMessage);
-        return res.status(200).json({ok: 1,data: user});
+        const result = {
+          userId: user.id,
+          username: user.username,
+          nickname: user.nickname,
+          email: user.email,
+          address: user.address,
+          is_admin: user.is_admin,
+          is_vendor: user.is_vendor,
+          announcement: user.announcement,
+          account: user.account,
+          socialmedia_id: user.socialmedia_id,
+          birthday: user.birthday,
+          id_card_no: user.id_card_no,
+          avatar_url: user.avatar_url,
+          banner_url: user.banner_url,
+          status: user.status
+        };
+        return res.status(200).json({ok: 1,data: result});
       })
       .catch(err => res.status(500).json({ok: 0,message: err}));
   },

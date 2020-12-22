@@ -12,7 +12,7 @@ userRouter.patch('/me', checkAuth(), userController.updateOwnInfo);
 userRouter.patch('/password', checkAuth(), userController.updateOwnPassword);
 userRouter.patch('/announcement', checkAuth(), userController.updateAnnouncement);
 userRouter.get('/', checkAuth('isAdmin'), userController.getAllUsers);
-userRouter.get('/:id', checkAuth('isAdmin'), userController.getUserInfo);
+userRouter.get('/:id', userController.getUserInfo);
 userRouter.patch('/:id', checkAuth('isAdmin'), userController.updateUserInfo);
 userRouter.post('/apply', checkAuth(), userController.applyForSeller);
 userRouter.delete('/delete', checkAuth('isAdmin'), userController.deleteUser);
