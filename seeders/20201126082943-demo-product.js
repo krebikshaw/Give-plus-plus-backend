@@ -705,7 +705,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 14,
         name: '充氣床',
         picture_url:
@@ -723,7 +723,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 14,
         name: '模型人偶',
         picture_url:
@@ -740,7 +740,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 15,
         name: '小水晶球',
         picture_url:
@@ -757,7 +757,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 15,
         name: '徵陪讀',
         picture_url:
@@ -774,7 +774,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 15,
         name: '徵讀書會',
         picture_url:
@@ -791,7 +791,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 16,
         name: '徵廚藝夥伴',
         picture_url:
@@ -809,7 +809,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 16,
         name: '徵 SEO 程師導師',
         picture_url:
@@ -827,7 +827,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 16,
         name: '徵環島夥伴',
         picture_url:
@@ -845,7 +845,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 17,
         name: '徵桌遊夥伴',
         picture_url:
@@ -863,7 +863,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 17,
         name: '徵程式家教',
         picture_url:
@@ -881,7 +881,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 17,
         name: '徵自行車夥伴',
         picture_url:
@@ -898,7 +898,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 18,
         name: '徵談心夥伴',
         picture_url:
@@ -915,7 +915,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 18,
         name: '徵新手媽媽社團',
         picture_url:
@@ -933,7 +933,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 18,
         name: '徵讀書會',
         picture_url:
@@ -950,7 +950,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 19,
         name: '舊飛鏢',
         picture_url:
@@ -967,7 +967,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 19,
         name: '皮卡丘裝',
         picture_url:
@@ -984,7 +984,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 19,
         name: '陶壺',
         picture_url:
@@ -1001,7 +1001,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 20,
         name: '魔術方塊',
         picture_url:
@@ -1018,7 +1018,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 20,
         name: '聖誕樹',
         picture_url:
@@ -1035,7 +1035,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        ProductCategoryId: 2,
+        ProductCategoryId: 3,
         UserId: 20,
         name: '獨木舟',
         picture_url:
