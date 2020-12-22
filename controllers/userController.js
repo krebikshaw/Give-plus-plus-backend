@@ -147,14 +147,14 @@ const userController = {
     const { oldPassword, newPassword, confirmPassword } = req.body;
     if (!oldPassword || !oldPassword.trim() || !newPassword ||!newPassword.trim() || !confirmPassword ||!confirmPassword.trim())
       return res.status(400).json({ok: 0,message: "fields are all required"});
-    if (newPassword !== confirmPassword) return res.status(400).json({ok: 0,message: "newPassword is not equal to confirmPassword"});
-    if ( oldPassword === newPassword ) return res.status(400).json({ok: 0,message: "oldPassword and newPassword cannot be the same"});
 
     User.findByPk(req.user.id)
       .then(user => {
         if (!user) return res.status(400).json(userNotFoundMessage);
         bcrypt.compare(oldPassword, user.password, (err, isSuccess) => {
           if (err || !isSuccess) return res.status(400).json({ok: 0,message: "Invalid oldPassword"});
+          if (oldPassword === newPassword ) return res.status(400).json({ok: 0,message: "oldPassword and newPassword cannot be the same"});
+          if (newPassword !== confirmPassword) return res.status(400).json({ok: 0,message: "newPassword is not equal to confirmPassword"});
           return bcrypt.hash(newPassword, saltRounds, (err, hash) => {
             if (err) return res.status(500).json({ok: 0,message: err});
             return user.update({
