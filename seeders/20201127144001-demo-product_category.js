@@ -54,7 +54,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        name: '綜合',
+        name: '遊戲',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
