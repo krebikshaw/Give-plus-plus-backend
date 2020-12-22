@@ -231,6 +231,7 @@ const orderController = {
 
     // 進入成立訂單 transaction
     try {
+      const orderNumber = generateOrderNumber();
       await sequelize.transaction(async (t) => {
         // 新增訂單
         const orderId = await Order.create(
@@ -244,7 +245,7 @@ const orderController = {
             seller_name: productsData[0].seller_name,
             seller_email: productsData[0].seller_email,
             seller_address: productsData[0].seller_address,
-            order_number: generateOrderNumber(),
+            order_number: orderNumber,
             total_amount: countTotalAmount(productsData),
           },
           { transaction: t }
@@ -300,7 +301,7 @@ const orderController = {
           { transaction: t }
         );
       });
-      return res.status(200).json({ ok: 1, message: "success" });
+      return res.status(200).json({ ok: 1, orderNumber });
     } catch (err) {
       return res.status(200).json(failToCreateNewOrder);
     }
