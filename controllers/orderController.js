@@ -1,11 +1,10 @@
 const db = require("../models");
 const Order = db.Order;
-const { Op, Sequelize, bulkCreate } = require("sequelize");
-const { Product, User, Cart, Order_items, Cart_items } = db;
-const { checkToken } = require("../middlewares/auth");
+const { Op } = require("sequelize");
+const { Product, User, Order_items, Cart_items } = db;
+const { sequelize } = require("../models");
 
 const noOrderMessage = { ok: 0, message: "there is no order" };
-const noOrderItemsMessage = { ok: 0, message: "there is no orderItems data" };
 const failDeleteOrderItems = { ok: 0, message: "fail to delete OrderItems" };
 const failToCancelOrder = { ok: 0, message: "fail to cancel Order" };
 const failToCompleteOrder = { ok: 0, message: "fail to complete Order" };
@@ -13,24 +12,18 @@ const failToSendOrder = { ok: 0, message: "fail to send Order" };
 const failToPaidOrder = { ok: 0, message: "fail to paid Order" };
 const failToCreateNewOrder = { ok: 0, message: "fail to create new Order" };
 const successMessage = { ok: 1, message: "success" };
+
 // 計算訂單總金額
-function countTotalAmount(cartItemData, requestData) {
-  const totalAmount = cartItemData.map((data) => {
-    let rightIndex = null;
-    requestData.map((product, index) => {
-      if (product.ProductId === data.ProductId) {
-        rightIndex = index;
-      }
-    
-    })
-    return requestData[rightIndex].product_quantity * Object.values(data)[6];
-  });
-  const totalAmountData = totalAmount.reduce((accumulator, totalAmount) => {
-    return accumulator + totalAmount;
-  });
-  return totalAmountData;
+function countTotalAmount(productsData) {
+  let total = 0;
+  productsData.forEach(
+    (productData) =>
+      (total += productData.product_price * productData.product_quantity)
+  );
+  return total;
 }
- // 計算訂單編號
+
+// 計算訂單編號
 function generateOrderNumber() {
   const date = new Date();
   const orderNumber =
@@ -40,6 +33,7 @@ function generateOrderNumber() {
     Math.round(Math.random() * 10000).toString();
   return orderNumber;
 }
+
 const orderController = {
   // 取得全部訂單列表
   getAllOrders: (req, res) => {
@@ -75,7 +69,6 @@ const orderController = {
         },
       })
         .then((product) => {
-          console.log(product);
           if (!product) return res.status(400).json(noOrderMessage);
           return res.status(200).json({ ok: 1, data: product });
         })
@@ -198,157 +191,121 @@ const orderController = {
       })
       .catch((err) => res.status(400).json(noOrderMessage));
   },
+
   // 成立訂單
   newOrder: async (req, res) => {
-    // 先從req.body拿productId,cart_quantity,sellerId
-    const { product_quantity, ProductId, UserId } = req.body;
-    const request_data = req.body;
-    const cartQuantityList = req.body.map((data) => Object.values(data)[0]);
-    const ProductIdList = req.body.map((data) => Object.values(data)[1]);
-    const sellerId = req.body.map((data) => Object.values(data)[2])[0];
-    console.log(cartQuantityList);
-    // 用productId findALL 拿到商品的金額,商品名稱等商品詳細資訊,再用關聯賣家sellerId 拿到賣家的賣家的姓名,email跟地址
+    // 把 request.body 按 product_id 排序
+    const sortedCartItems = req.body.sort((a, b) => a.ProductId - b.ProductId);
+    // 拿到準備下單的商品 id 的陣列
+    const productIdList = sortedCartItems.map((item) => item.ProductId);
+    // 整理成之後要用來新增至 order items 的陣列
     const productsData = await Product.findAll({
-      where: {
-        id: { [Op.in]: ProductIdList },
-      },
-
-      include: {
-        model: User,
-        right: true, // right join
-      },
-    }).then((products) => {
-      return products.map((product) => {
+      where: { id: { [Op.in]: productIdList } },
+      include: User,
+    }).then((products) =>
+      products.map((product) => {
+        let currentItem = sortedCartItems.find(
+          (item) => item.ProductId === product.id
+        );
         return {
           ProductId: product.id,
           product_name: product.name,
           product_category_id: product.ProductCategoryId,
           product_picture_url: product.picture_url,
           product_info: product.info,
-          product_quantity: product.quantity,
+          productOriginQuantity: product.quantity, // 商品數量
+          product_quantity: currentItem.product_quantity, // 要買的數量
           product_price: product.price,
           product_delivery: product.delivery,
           seller_name: product.User.username,
           seller_email: product.User.email,
           seller_address: product.User.address,
         };
-      });
-    });
-    const productQuantityList = productsData.map(
-      (data) => Object.values(data)[5]
+      })
     );
-    console.log(productQuantityList);
+
+    // 如果沒有商品資料就回傳錯誤訊息
     if (!productsData) {
       return res.status(400).json({ ok: 0, message: "no product" });
     }
-    const orderNumber = generateOrderNumber();
 
-    // 新增到order
-    const IsOrderSuccess = await Order.create({
-      UserId: req.user.id,
-      client_id: req.user.id,
-      client_name: req.user.username,
-      client_email: req.user.email,
-      client_address: req.user.address,
-      seller_id: sellerId,
-      seller_name: productsData[0].seller_name,
-      seller_email: productsData[0].seller_email,
-      seller_address: productsData[0].seller_address,
-      order_number: orderNumber,
-      total_amount: countTotalAmount(productsData, request_data),
-
-    });
-
-    // 新增到order item
-    const isOrderItemSuccess = await Order_items.bulkCreate(productsData, {
-      returning: true,
-      updateOnDuplicate: ["OrderId"],
-    }).then(async (order) => {
-      let OrderId = order[0].id;
-
-      await Order_items.update(
-        { 
-          OrderId: OrderId,
-        },
-        { where: { ProductId: { [Op.in]: ProductIdList } } }
-      );
-    });
-
-    const IsOrderMade = await Promise.all([
-      IsOrderSuccess,
-      isOrderItemSuccess,
-    ]).then(() => true);
-
-    // 更新賣家商品數量
-    if (!IsOrderMade) {
-      return res.status(400).json({ ok: 0, message: "fail to create order" });
-    }
-
-    const productUpdate = async (id) => {
-      let oldProductIndex = null;
-      let cartProductIndex = null;
-      request_data.map((product, index) => {
-        if (product.ProductId === id) {
-          cartProductIndex = index;
-        }
-      });
-      productsData.map((product, index) => {
-        if (product.ProductId === id) {
-          oldProductIndex = index;
-        }
-      });
-
-      await Product.update(
-        {
-          quantity:
-            productsData[oldProductIndex].product_quantity -
-            request_data[cartProductIndex].product_quantity,
-        },
-        {
-          where: {
-            id: id,
+    // 進入成立訂單 transaction
+    try {
+      const orderNumber = generateOrderNumber();
+      await sequelize.transaction(async (t) => {
+        // 新增訂單
+        const orderId = await Order.create(
+          {
+            UserId: req.user.id,
+            client_id: req.user.id,
+            client_name: req.user.username,
+            client_email: req.user.email,
+            client_address: req.user.address,
+            seller_id: sortedCartItems[0].UserId,
+            seller_name: productsData[0].seller_name,
+            seller_email: productsData[0].seller_email,
+            seller_address: productsData[0].seller_address,
+            order_number: orderNumber,
+            total_amount: countTotalAmount(productsData),
           },
+          { transaction: t }
+        ).then((order) => order.id);
+
+        // 如果建立訂單失敗沒拿到 orderId，就回傳錯誤訊息
+        if (!orderId) {
+          return res.status(400).json(failToCreateNewOrder);
         }
-      );
-    };
 
-    let IsProductsUpdate = await Promise.all(
-      Array.from(Array(request_data.length).keys()).map((i) => {
-        return productUpdate(request_data[i].ProductId);
-      })
-    ).then(() => {
-      return true;
-    });
+        // 對準備要下單的商品，逐一檢查與更新賣家商品庫存
+        await Promise.all(
+          productsData.map((productData) => {
+            let stockQuantity = productData.productOriginQuantity; // 賣家的庫存數量
+            let cartQuantity = productData.product_quantity; // 準備要買的數量
+            // 數量不夠賣，就回傳錯誤跳出 transaction
+            if (stockQuantity - cartQuantity < 0) throw new Error();
+            // 把要買的商品數量從賣家商品的數量中減去
+            Product.update(
+              { quantity: stockQuantity - cartQuantity },
+              { where: { id: productData.ProductId } },
+              { transaction: t }
+            );
+          })
+        );
 
-    if (!IsProductsUpdate) {
-      return res.status(400).json({ ok: 0, message: "fail to create order" });
-    }
+        // 數量足夠就批量新增訂單商品
+        await Order_items.bulkCreate(
+          productsData,
+          {
+            returning: true,
+            updateOnDuplicate: ["OrderId"],
+          },
+          { transaction: t }
+        ).then(async (orderItems) => {
+          const orderItemsIdList = orderItems.map((item) => item.id);
+          // 把先前成立訂單的訂單 id 寫進 order items 的 OrderId 欄位裡
+          await Order_items.update(
+            { OrderId: orderId },
+            { where: { id: { [Op.in]: orderItemsIdList } } },
+            { transaction: t }
+          );
+        });
 
-    // 把購物車商品刪掉
-    const deleteCartItem = async (id) => {
-      await Cart_items.destroy({
-        where: {
-          ProductId: id,
-        },
+        // 刪除買家購物車商品
+        await Cart_items.destroy(
+          {
+            where: {
+              CartId: req.user.id,
+              ProductId: { [Op.in]: productIdList },
+            },
+          },
+          { transaction: t }
+        );
       });
-    };
-
-    let IsCartItemsDestroy = await Promise.all(
-      Array.from(Array(request_data.length).keys()).map((i) => {
-        return deleteCartItem(request_data[i].ProductId);
-      })
-    ).then(() => {
-      return true;
-    });
-
-     if (!IsCartItemsDestroy) {
-       return res.status(400).json({ ok: 0, message: "fail to create order" });
-     }
-
-    res.status(200).json({ ok: 1, orderNumber: orderNumber });
-  }
- 
-
+      return res.status(200).json({ ok: 1, orderNumber });
+    } catch (err) {
+      return res.status(200).json(failToCreateNewOrder);
+    }
+  },
 };
 
 module.exports = orderController;
