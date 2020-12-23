@@ -80,7 +80,7 @@ module.exports = {
         UserId: 2,
         name: '象牙白浴缸',
         picture_url:
-          'https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          'https://images.pexels.com/photos/1358912/pexels-photo-1358912.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         info:
           '7成新，底部有一點點刮痕，大概 4 公分。總長度 130 公分，寬 70 公分，容量 7000cc，喜歡歡迎詢問。',
         price: 1000,
