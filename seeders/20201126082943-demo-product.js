@@ -1054,7 +1054,7 @@ module.exports = {
 
       {
         ProductCategoryId: 4,
-        UserId: 10,
+        UserId: 16,
         name: '質感百褶中長裙 - 3color',
         picture_url: 'https://i.imgur.com/T9EoONp.gif',
         info: `
@@ -1074,16 +1074,15 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 10,
-        name: '焦糖瑪奇朵V領洋裝',
-        picture_url: 'https://i.imgur.com/6cNM3go.jpg',
+        UserId: 16,
+        name: '百搭中線毛呢西裝褲 XS-2XL',
+        picture_url: 'https://i.imgur.com/N6sW0zm.gif',
         info: `
-        翻領，長袖設計/百褶設計剪接/雙排釦設計/單右側附口袋/無內裡
-        商品顏色因電腦螢幕設定差異會略有不同，請以實際商品為準
-        商品材質：88%聚酯纖維12%棉
-        產地：中國
+        尼龍50% 滌綸47% 彈力棉3%
+        Made in Korea.
+      
         `,
-        price: 1780,
+        price: 10260,
         quantity: 1,
         delivery: '1',
         delivery_location: '桃園',
@@ -1095,13 +1094,12 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 10,
-        name: '高質感軟呢格紋外套',
-        picture_url: 'https://i.imgur.com/zyhgis5.jpg',
+        UserId: 16,
+        name: '熱奶茶鬆軟兔毛毛帽',
+        picture_url: 'https://i.imgur.com/D1MWJJI.gif',
         info: `
-        軟呢格紋面料/鬚邊設計/金屬排釦/兩側附口袋/附內裡
-        商品材質：表布:100%聚酯纖維裡布:100%聚酯纖維
-        產地：中國
+        軟呢格紋面料
+        Made in Korea.
         售出不退`,
         price: 1680,
         quantity: 1,
@@ -1115,15 +1113,22 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 10,
-        name: 'V領麻花澎袖毛衣',
-        picture_url: 'https://i.imgur.com/OGa0pt6.jpg',
+        UserId: 16,
+        name: '推薦款! HANDMADE 高級感雙排釦羊毛大衣',
+        picture_url: 'https://i.imgur.com/E9ZCx3h.gif',
         info: `
-        麻花針織面料/V領，長袖設計/領口，袖口及下擺羅紋收邊/無內裡
-        商品材質：100%壓克力纖維
-        產地：中國
-        🐰 商品售出，恕不退換貨🙏`,
-        price: 1080,
+        微落肩的版型+精緻內襯
+
+       有點厚度卻完全不重的100%高級手工羊毛
+
+       隨性套上就有高級的氣場
+
+       顏色是其他手工外套少見的特殊色
+
+       三個色都不挑膚色又好駕馭
+
+        推薦給160cm的女生、喜歡長版大衣的小個女孩❤️`,
+        price: 5922,
         quantity: 1,
         delivery: '1',
         delivery_location: '基隆',
@@ -1135,12 +1140,11 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 10,
-        name: '高質感麻花針織背心',
-        picture_url: 'https://i.imgur.com/8AZdbYF.jpg',
+        UserId: 16,
+        name: 'cashmere溫暖羊絨手套 - 3colors',
+        picture_url: 'https://i.imgur.com/OP5aRCu.gif',
         info: `
-        柔軟麻花針織/小立領，無袖設計/兩側可調綁帶
-        商品材質：100%壓克力纖維
+        Made in Korea.
         `,
         price: 1080,
         quantity: 1,
@@ -1154,13 +1158,13 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 13,
-        name: '清甜薄荷綠連帽上衣',
-        picture_url: 'https://i.imgur.com/DYc1H72.jpg',
+        UserId: 16,
+        name: '新色上架✨鬆軟親膚100%羊毛圍巾',
+        picture_url: 'https://i.imgur.com/efxPzxt.gif',
         info: `
-        毛圈布面料/抽繩連帽，落肩袖設計/袖口及下擺羅紋剪接/兩側附口袋
-        商品材質：100%棉
-        產地：中國`,
+        寬30.5 / 全長172
+        Fabric 羊毛100%
+        Made in Korea.`,
         price: 790,
         quantity: 1,
         delivery: '1',
@@ -1173,12 +1177,12 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 13,
-        name: '造型皮質褲裙',
-        picture_url: 'https://i.imgur.com/GVfjJbB.jpg',
+        UserId: 16,
+        name: '舒適刷毛休閒套裝SET - 2colors',
+        picture_url: 'https://i.imgur.com/P0a1sGi.gif',
         info: `
-        短褲裙/後腰鬆緊設計/左側開隱形拉鍊/兩側附口袋/無內裡
-        商品材質：100%聚氨酯纖維
+        棉65% 滌綸35%
+        Made in Korea.
         `,
         price: 900,
         quantity: 1,
@@ -1192,15 +1196,15 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 13,
-        name: '格紋開釦西裝外套',
-        picture_url: 'https://i.imgur.com/khKQ5YQ.jpg',
+        UserId: 16,
+        name: '舒適感側開衩刷毛連帽OPS',
+        picture_url: 'https://i.imgur.com/rlODx2M.gif',
         info: `
-        中長版西裝外套/微墊肩設計/後下擺開岔/兩側附口袋/附內裡
+        棉65%
 
-        商品材質：表布:78%聚酯纖維19%嫘縈3%彈性纖維裡布:100%聚酯纖維
+        滌淪35%
 
-        產地：中國`,
+        Made in Korea.`,
         price: 1680,
         quantity: 1,
         delivery: '1',
@@ -1213,15 +1217,17 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 13,
-        name: '排釦網紗拼接中長裙',
-        picture_url: 'https://i.imgur.com/BV32kuY.jpg',
+        UserId: 17,
+        name: '暖冬毛茸感小臉鐘型帽',
+        picture_url: 'https://i.imgur.com/gU6QJZt.gif',
         info: `
-        斜紋拼接網紗面料/前排開釦設計/附網紗綁帶/無口袋/無內裡
+        手感超柔軟
 
-        商品材質：表布:100%聚酯纖維裡布:100%棉
+        戴起來完全不刺癢也不挑頭型 (很重要!)
 
-        產地：中國`,
+        非常修飾臉型
+        Made in Korea.
+        `,
         price: 1180,
         quantity: 1,
         delivery: '1',
@@ -1234,13 +1240,15 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 13,
-        name: '毛呢方格傘擺長裙',
-        picture_url: 'https://i.imgur.com/Nsfw81S.jpg',
-        info: `
-        厚挺毛呢格紋面料/腰圍無鬆緊/左下擺開岔設計/兩側附口袋/附內裡
-        商品材質：表布:100%聚酯纖維裡布:100%聚酯纖維
-        產地：中國
+        UserId: 17,
+        name: '本期必買! 親膚小浣熊針織外套',
+        picture_url: 'https://i.imgur.com/7bVEBDl.gif',
+        info: `本期自留+Model推薦第一名!!
+        比之前熱賣超過百件的小浣熊外套更加保暖親膚
+        單穿也完全不刺♡
+        四個顏色都超級好看
+        微短版的長度
+        即使沒有腰身也能看起來超修飾
         
         `,
         price: 1180,
@@ -1255,13 +1263,12 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 15,
-        name: '麥芽牛奶舒適打摺寬褲',
-        picture_url: 'https://i.imgur.com/pWJNmRI.jpg',
+        UserId: 17,
+        name: '新色上架✨鬆軟親膚100%羊毛圍巾',
+        picture_url: 'https://i.imgur.com/5dxEnRk.gif',
         info: `
-        舒適親膚彈性面料/鬆緊腰帶/打摺設計/兩側附口袋/無內裡
-        商品材質：64%棉26%尼龍10%彈性纖維
-        產地：中國`,
+        寬30.5 / 全長172
+        `,
         price: 1080,
         quantity: 1,
         delivery: '1',
@@ -1274,13 +1281,13 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 15,
-        name: '不低調彈力修身牛仔褲',
-        picture_url: 'https://i.imgur.com/pQnwJ2u.jpg',
+        UserId: 17,
+        name: '精緻小細節圓領打褶上衣-3colors',
+        picture_url: 'https://i.imgur.com/xlNRjZK.gif',
         info: `
-        舒適彈性牛仔面料/鬆緊腰設計/前後均附口袋
-        商品材質：75%棉23%聚酯纖維2%彈性纖維
-        產地：中國`,
+        這件請細節控們一定要收下！
+        肩線的設計特別有巧思
+        即使是肩膀寬的女生也能駕馭`,
         price: 990,
         quantity: 1,
         delivery: '1',
@@ -1293,12 +1300,14 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 15,
-        name: '輕鬆休閒不規則下擺長褲',
-        picture_url: 'https://i.imgur.com/mtK09FL.jpg',
+        UserId: 18,
+        name: '高領側開衩針織背心',
+        picture_url: 'https://i.imgur.com/2avLkpw.gif',
         info: `
-        舒適毛圈布面料/褲管小喇叭設計/下擺不規則剪裁，抽鬚設計/腰頭鬆緊抽繩設計/無附口袋/無內裡
-        商品材質：100%棉`,
+        含有80%溫暖羊毛
+        手感溫柔厚實
+        脖子處也不會勒
+        搭配襯衫或簡單的打底上衣就很好看!`,
         price: 790,
         quantity: 1,
         delivery: '1',
@@ -1311,12 +1320,16 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 9,
-        name: '粉紅泡泡口袋毛呢短裙',
-        picture_url: 'https://i.imgur.com/SYUcdFV.jpg',
+        UserId: 18,
+        name: '質感織紋毛料打摺裙 S-M',
+        picture_url: 'https://i.imgur.com/XGgXiwO.gif',
         info: `
-        舒適毛呢面料，微彈性/後中開隱形拉鍊/大口袋設計/無內裡
-        商品材質：55%聚酯纖維45%壓克力纖維`,
+        含有羊毛+內襯的秋冬打摺裙
+        擔心百褶裙總是太顯臀圍
+        非常推薦入手這件
+        微A字的版型
+        偷偷幫您把臀部修飾好了!
+        `,
         price: 990,
         quantity: 1,
         delivery: '1',
@@ -1329,11 +1342,15 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 9,
-        name: '扎實感撞色針織外套',
-        picture_url: 'https://i.imgur.com/W7F6BJ0.jpg',
+        UserId: 18,
+        name: '微方頭日常低跟鞋22.5-25',
+        picture_url: 'https://i.imgur.com/LC5kNBz.gif',
         info: `
-        扎實手感/落肩袖，雙口袋設計/撞色設計/無內裡`,
+        這雙鞋是今年找到最喜歡的一雙
+        很適合搭配各種米色調的衣服
+        怕冷的女孩搭秋冬季節搭配褲襪或長襪就很溫暖囉!
+        喜歡穿舒服一點的話可以拿大半號
+        `,
         price: 1280,
         quantity: 1,
         delivery: '1',
@@ -1346,11 +1363,13 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 9,
-        name: '這才是真的巧克力大衣',
-        picture_url: 'https://i.imgur.com/MpU3ct2.jp',
+        UserId: 19,
+        name: '復古質感半月金釦包',
+        picture_url: 'https://i.imgur.com/pqYv6FB.gif',
         info: `
-        坑條燈心絨面料/落肩式剪接設計/雙排琥珀釦設計/後中下擺開岔設計/兩側附口袋/附內裡`,
+        Made in China.
+        人造皮革100%
+        `,
         price: 1090,
         quantity: 1,
         delivery: '1',
@@ -1363,11 +1382,15 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 8,
-        name: '翻領短版騎士外套',
-        picture_url: 'https://i.imgur.com/4hw7dLp.jpg',
+        UserId: 19,
+        name: 'HANDMADE莫蘭迪手工羊毛大衣',
+        picture_url: 'https://i.imgur.com/DHbZT6m.gif',
         info: `
-        落肩寬袖設計/領口附雙D字環釦帶/兩側附口袋/無內裡`,
+        含有90%高級羊毛+精緻內襯
+        手感極輕卻非常保暖
+        長度有蓋過臀部
+        搭配各種下身都好看!
+        `,
         price: 840,
         quantity: 1,
         delivery: '1',
@@ -1380,11 +1403,11 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 8,
-        name: '巧克力格紋西裝外套',
-        picture_url: 'https://i.imgur.com/6TSCjA3.jpg',
+        UserId: 19,
+        name: '最後數量! saint舒適刷毛大學T',
+        picture_url: 'https://i.imgur.com/W4cBz7a.gif',
         info: `
-        挺版格紋面料/翻領，袖開釦開岔設計/微腰身設計/兩側附口袋/附D字環可拆式腰帶/附內裡`,
+        售完不補`,
         price: 1580,
         quantity: 1,
         delivery: '1',
@@ -1397,11 +1420,11 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 8,
-        name: '香濃花生麻花針織外套',
-        picture_url: 'https://i.imgur.com/mLAkboO.jpg',
+        UserId: 20,
+        name: 'Wool小法式羊毛中長裙 (附皮帶) ',
+        picture_url: 'https://i.imgur.com/hTu2XNc.gif',
         info: `
-        麻花粗針織面料/開襟設計/袖口及下擺羅紋收邊/附綁帶/無內裡`,
+        羊毛50% 壓克力纖維25% 滌綸25%`,
         price: 1180,
         quantity: 1,
         delivery: '1',
@@ -1414,11 +1437,11 @@ module.exports = {
       },
       {
         ProductCategoryId: 4,
-        UserId: 7,
-        name: '時髦紋路感漁夫帽',
-        picture_url: 'https://i.imgur.com/VC8X5l0.jpg',
+        UserId: 20,
+        name: 'Teddy冬日溫暖翻領外套 - 2colors',
+        picture_url: 'https://i.imgur.com/RkgtjeV.gif',
         info: `
-        可自行調整頭圍`,
+        肩54 胸55.5 袖長55 袖口寬17 下圍寬54 總長80`,
         price: 490,
         quantity: 1,
         delivery: '1',
@@ -1431,7 +1454,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 7,
+        UserId: 20,
         name: 'Celvoke 玩色晶漾唇蜜',
         picture_url: 'https://i.imgur.com/HbCqXyL.jpg',
         info: `
@@ -1448,7 +1471,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 7,
+        UserId: 16,
         name: 'ADDICTION 水透癮防曬乳',
         picture_url: 'https://i.imgur.com/JnO1e4x.jpg',
         info: `
@@ -1465,7 +1488,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 7,
+        UserId: 16,
         name: 'NARS 雙色眼影',
         picture_url: 'https://i.imgur.com/hReovLq.jpg',
         info: `
@@ -1482,7 +1505,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 6,
+        UserId: 16,
         name: 'Laura mercier 蘿拉蜜思 霓彩眼影 ',
         picture_url: 'https://i.imgur.com/j6a7lNg.jpg',
         info: `
@@ -1499,7 +1522,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 6,
+        UserId: 16,
         name: 'Lily lolo 唇膏 Natural lipstick',
         picture_url: 'https://i.imgur.com/uAC0DCs.jpg',
         info: `
@@ -1516,7 +1539,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 6,
+        UserId: 17,
         name: 'Jo malone 香水30/100ml ',
         picture_url: 'https://i.imgur.com/7UekBMl.jpg',
         info: `
@@ -1535,7 +1558,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 6,
+        UserId: 17,
         name: 'Bobbi brown 芭比布朗冬蟲夏草粉底液',
         picture_url: 'https://i.imgur.com/QdBrlUs.jpg',
         info: `
@@ -1554,7 +1577,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 6,
+        UserId: 17,
         name: '✈️BYREDO✈️香水',
         picture_url: 'https://i.imgur.com/d0zrf9q.jpg',
         info: `
@@ -1575,7 +1598,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 5,
+        UserId: 18,
         name: '🕯️BYREDO 🕯️純柔絨棉黑色時尚蠟燭 cotton poplin',
         picture_url: 'https://i.imgur.com/6tmaA1C.jpg',
         info: `
@@ -1594,7 +1617,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 5,
+        UserId: 18,
         name: 'Le Labo 香水',
         picture_url: 'https://i.imgur.com/Io0wOpN.jpg',
         info: `
@@ -1612,7 +1635,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 4,
+        UserId: 18,
         name: 'diptyque',
         picture_url: 'https://i.imgur.com/NIkCg0A.jpg',
         info: `
@@ -1635,7 +1658,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 4,
+        UserId: 19,
         name: 'Chloe 經典淡香精',
         picture_url: 'https://i.imgur.com/4yS0chb.jpg',
         info: `
@@ -1656,7 +1679,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 4,
+        UserId: 19,
         name: 'Mac 口紅',
         picture_url: 'https://i.imgur.com/KZt94Yn.jpg',
         info: `
@@ -1675,7 +1698,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 3,
+        UserId: 19,
         name: 'ysl 口紅 ',
         picture_url: 'https://i.imgur.com/5RgPMdP.jpg',
         info: `
@@ -1693,7 +1716,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 3,
+        UserId: 20,
         name: 'NYX 眼影盤 Ultimate16色',
         picture_url: 'https://i.imgur.com/XzLtWrC.jpg',
         info: `
@@ -1713,7 +1736,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 14,
+        UserId: 20,
         name: 'Etude House 九宮格眼影盤 ',
         picture_url: 'https://i.imgur.com/cKC6apd.jpg',
         info: `
@@ -1732,7 +1755,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 14,
+        UserId: 20,
         name: 'aesop 香水',
         picture_url: 'https://i.imgur.com/4StB2mn.jpg',
         info: `
@@ -1768,7 +1791,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 3,
+        UserId: 16,
         name: 'AESOP 賦活芳香護手霜 75ml/500ml',
         picture_url: 'https://i.imgur.com/EDza6xO.jpg',
         info: `
@@ -1787,7 +1810,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 5,
-        UserId: 2,
+        UserId: 16,
         name: 'PS4 惡靈古堡5',
         picture_url: 'https://i.imgur.com/UAkr3G7.jpg',
         info: `
@@ -1806,7 +1829,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 1,
+        UserId: 16,
         name: '谷關 伊豆溫泉 泡湯票卷 泡湯卷',
         picture_url: 'https://i.imgur.com/lNQ2lem.jpg',
         info: `
@@ -1826,7 +1849,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 2,
+        UserId: 17,
         name: '【日本東京台場・大江戶溫泉物語】實體票卷',
         picture_url: 'https://i.imgur.com/jZsXfc7.jpg',
         info: `
@@ -1845,7 +1868,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 10,
+        UserId: 17,
         name: '【大阪周遊卡1日券／2日券】實體票卷',
         picture_url: 'https://i.imgur.com/WPlZZ34.jpg',
         info: `
@@ -1863,7 +1886,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 11,
+        UserId: 17,
         name: '【JR・關西廣域周遊券・5日券】實體票卷',
         picture_url: 'https://i.imgur.com/mbB8PDt.jpg',
         info: `
@@ -1881,7 +1904,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 13,
+        UserId: 18,
         name: '【JR・關西鐵路周遊券・1~3日券】實體票卷',
         picture_url: 'https://i.imgur.com/YVJGPap.jpg',
         info: `
@@ -1900,7 +1923,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 14,
+        UserId: 18,
         name: '【大阪地鐵＆巴士乘車券・1日卷】實體票卷',
         picture_url: 'https://i.imgur.com/DwnIGcr.jpg',
         info: `
@@ -1919,7 +1942,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 6,
+        UserId: 18,
         name: '<大阪票卷>日本環球影城',
         picture_url: 'https://i.imgur.com/dOjylz6.jpg',
         info: `
@@ -1937,7 +1960,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 7,
+        UserId: 19,
         name: '朝日溫泉全票卷',
         picture_url: 'https://i.imgur.com/5tG8HZT.jpg',
         info: `
@@ -1955,7 +1978,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 8,
+        UserId: 19,
         name: '花蓮］維納司 遊艇 賞鯨票卷 ',
         picture_url: 'https://i.imgur.com/HAMP8IX.jpg',
         info: `
@@ -1973,7 +1996,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 9,
+        UserId: 19,
         name: '美國加州迪士尼平季兒童票 單日券 電子票卷',
         picture_url: 'https://i.imgur.com/ogYMIx2.jpg',
         info: `
@@ -1991,7 +2014,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 10,
+        UserId: 20,
         name: '日本票卷 京都 貴船 鞍馬 一日卷 現貨 兩張雙人套票',
         picture_url: 'https://i.imgur.com/VS9wmsP.jpg',
         info: `
@@ -2009,7 +2032,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 11,
+        UserId: 20,
         name: '世田谷散策一日券',
         picture_url: 'https://i.imgur.com/XLVQ5AP.jpg',
         info: `
@@ -2027,7 +2050,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 12,
+        UserId: 20,
         name: '太宰府柳川觀光套票',
         picture_url: 'https://i.imgur.com/6moBCMi.jpg',
         info: `
@@ -2046,7 +2069,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 13,
+        UserId: 16,
         name: '關西&北陸地區鐵路周遊券',
         picture_url: 'https://i.imgur.com/jTGDoHt.jpg',
         info: `
@@ -2064,7 +2087,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 14,
+        UserId: 16,
         name: '岡山&廣島&山口地區鐵路周遊券',
         picture_url: 'https://i.imgur.com/UujK7b8.jpg',
         info: `
@@ -2082,7 +2105,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 15,
+        UserId: 16,
         name: '九州自由行最強票券「西鐵SUNQ PASS」 ',
         picture_url: 'https://i.imgur.com/GfhOqON.jpg',
         info: `
@@ -2100,7 +2123,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 16,
+        UserId: 17,
         name: '交通票券「Tokyo Subway Ticket」 ',
         picture_url: 'https://i.imgur.com/600gLx1.jpg',
         info: `
@@ -2172,7 +2195,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 12,
+        UserId: 18,
         name: '「Izuko通票」',
         picture_url: 'https://i.imgur.com/FMVhOsn.jpg',
         info: `
@@ -2190,7 +2213,7 @@ module.exports = {
       },
       {
         ProductCategoryId: 6,
-        UserId: 6,
+        UserId: 18,
         name: '「奈良‧斑鳩一日券」',
         picture_url: 'https://i.imgur.com/bKjydKL.jpg',
         info: `
@@ -2206,7 +2229,6 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-
       {
         ProductCategoryId: 7,
         UserId: 1,
@@ -2549,7 +2571,7 @@ module.exports = {
         ProductCategoryId: 8,
         UserId: 1,
         name: '喵星人飼料零食 不分售',
-        picture_url: '',
+        picture_url: 'https://i.imgur.com/H7w2Rqi.jpg',
         info:
           '囍碗全齢貓飼料×1、和風黑酵母機能零食×1、荒野饗宴飼料×2、蒸鮮蟳味棒×1、蒸鮮烏魚條×1、雞鮮生肉泥×1、日清懷石貓湯罐×1、筷子肉乾×2、旺卡貓用營養補給肉泥×1',
         price: 900,
@@ -4275,7 +4297,8 @@ module.exports = {
         ProductCategoryId: 12,
         UserId: 8,
         name: '茶杯',
-        picture_url: 'https://www.pinterest.com/pin/52424783143048812/',
+        picture_url:
+          'https://i.pinimg.com/564x/80/eb/b1/80ebb148a4b17fa98335870292fa3443.jpg',
         info: `
         二手商品有使用痕跡，高標買家請買全新品 
         `,
