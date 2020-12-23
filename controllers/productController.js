@@ -49,6 +49,9 @@ const productController = {
     Product.findAndCountAll({
       where: {
         status,
+        quantity: {
+          [Op.gt]: 0,
+        },
       },
       include: [
         {
@@ -129,6 +132,9 @@ const productController = {
           where: {
             ProductCategoryId: category.id,
             status,
+            quantity: {
+              [Op.gt]: 0,
+            },
           },
           include: [
             {
@@ -276,6 +282,9 @@ const productController = {
         status,
         name: {
           [Op.like]: `%${_keyword}%`,
+        },
+        quantity: {
+          [Op.gt]: 0,
         },
       },
       include: [
