@@ -1056,7 +1056,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: '質感百褶中長裙 - 3color',
-        picture_url: 'https://i.imgur.com/T9EoONp.gif',
+        picture_url: 'https://i.imgur.com/Gv6T7KQ.jpg',
         info: `
         腰圍30(鬆緊腰) / 臀圍75 / 下擺圍133 / 全長80
         Made in Korea.
@@ -1076,7 +1076,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: '百搭中線毛呢西裝褲 XS-2XL',
-        picture_url: 'https://i.imgur.com/N6sW0zm.gif',
+        picture_url: 'https://i.imgur.com/RJYdr2o.jpg',
         info: `
         尼龍50% 滌綸47% 彈力棉3%
         Made in Korea.
@@ -1096,7 +1096,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: '熱奶茶鬆軟兔毛毛帽',
-        picture_url: 'https://i.imgur.com/D1MWJJI.gif',
+        picture_url: 'https://i.imgur.com/Pxg2pIX.jpg',
         info: `
         軟呢格紋面料
         Made in Korea.
@@ -1115,7 +1115,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: '推薦款! HANDMADE 高級感雙排釦羊毛大衣',
-        picture_url: 'https://i.imgur.com/E9ZCx3h.gif',
+        picture_url: 'https://i.imgur.com/spWbiMh.jpg',
         info: `
         微落肩的版型+精緻內襯
 
@@ -1142,7 +1142,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: 'cashmere溫暖羊絨手套 - 3colors',
-        picture_url: 'https://i.imgur.com/OP5aRCu.gif',
+        picture_url: 'https://i.imgur.com/npQcyZB.jpg',
         info: `
         Made in Korea.
         `,
@@ -1160,7 +1160,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: '新色上架✨鬆軟親膚100%羊毛圍巾',
-        picture_url: 'https://i.imgur.com/efxPzxt.gif',
+        picture_url: 'https://i.imgur.com/bHzcfJQ.jpg',
         info: `
         寬30.5 / 全長172
         Fabric 羊毛100%
@@ -1179,7 +1179,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: '舒適刷毛休閒套裝SET - 2colors',
-        picture_url: 'https://i.imgur.com/P0a1sGi.gif',
+        picture_url: 'https://i.imgur.com/pzhcdL1.jpg',
         info: `
         棉65% 滌綸35%
         Made in Korea.
@@ -1198,7 +1198,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 16,
         name: '舒適感側開衩刷毛連帽OPS',
-        picture_url: 'https://i.imgur.com/rlODx2M.gif',
+        picture_url: 'https://i.imgur.com/CU0XoUi.jpg',
         info: `
         棉65%
 
@@ -1219,7 +1219,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 17,
         name: '暖冬毛茸感小臉鐘型帽',
-        picture_url: 'https://i.imgur.com/gU6QJZt.gif',
+        picture_url: 'https://i.imgur.com/LTTTmsH.jpg',
         info: `
         手感超柔軟
 
@@ -1242,7 +1242,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 17,
         name: '本期必買! 親膚小浣熊針織外套',
-        picture_url: 'https://i.imgur.com/7bVEBDl.gif',
+        picture_url: 'https://i.imgur.com/tfLXvAf.jpg',
         info: `本期自留+Model推薦第一名!!
         比之前熱賣超過百件的小浣熊外套更加保暖親膚
         單穿也完全不刺♡
@@ -1265,7 +1265,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 17,
         name: '新色上架✨鬆軟親膚100%羊毛圍巾',
-        picture_url: 'https://i.imgur.com/5dxEnRk.gif',
+        picture_url: 'https://i.imgur.com/zfITAJN.jpg',
         info: `
         寬30.5 / 全長172
         `,
@@ -1283,7 +1283,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 17,
         name: '精緻小細節圓領打褶上衣-3colors',
-        picture_url: 'https://i.imgur.com/xlNRjZK.gif',
+        picture_url: 'https://i.imgur.com/3q0OCF9.jpg',
         info: `
         這件請細節控們一定要收下！
         肩線的設計特別有巧思
@@ -1302,7 +1302,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 18,
         name: '高領側開衩針織背心',
-        picture_url: 'https://i.imgur.com/2avLkpw.gif',
+        picture_url: 'https://i.imgur.com/4BauykG.jpg',
         info: `
         含有80%溫暖羊毛
         手感溫柔厚實
@@ -1322,7 +1322,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 18,
         name: '質感織紋毛料打摺裙 S-M',
-        picture_url: 'https://i.imgur.com/XGgXiwO.gif',
+        picture_url: 'https://i.imgur.com/L1LKTl6.jpg',
         info: `
         含有羊毛+內襯的秋冬打摺裙
         擔心百褶裙總是太顯臀圍
@@ -1344,7 +1344,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 18,
         name: '微方頭日常低跟鞋22.5-25',
-        picture_url: 'https://i.imgur.com/LC5kNBz.gif',
+        picture_url: 'https://i.imgur.com/0HtPQI8.jpg',
         info: `
         這雙鞋是今年找到最喜歡的一雙
         很適合搭配各種米色調的衣服
@@ -1365,7 +1365,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 19,
         name: '復古質感半月金釦包',
-        picture_url: 'https://i.imgur.com/pqYv6FB.gif',
+        picture_url: 'https://i.imgur.com/oxSA2mm.jpg',
         info: `
         Made in China.
         人造皮革100%
@@ -1384,7 +1384,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 19,
         name: 'HANDMADE莫蘭迪手工羊毛大衣',
-        picture_url: 'https://i.imgur.com/DHbZT6m.gif',
+        picture_url: 'https://i.imgur.com/MruPOPc.jpg',
         info: `
         含有90%高級羊毛+精緻內襯
         手感極輕卻非常保暖
@@ -1405,7 +1405,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 19,
         name: '最後數量! saint舒適刷毛大學T',
-        picture_url: 'https://i.imgur.com/W4cBz7a.gif',
+        picture_url: 'https://i.imgur.com/zENRjU2.jpg',
         info: `
         售完不補`,
         price: 1580,
@@ -1422,7 +1422,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 20,
         name: 'Wool小法式羊毛中長裙 (附皮帶) ',
-        picture_url: 'https://i.imgur.com/hTu2XNc.gif',
+        picture_url: 'https://i.imgur.com/AvDDneu.jpg',
         info: `
         羊毛50% 壓克力纖維25% 滌綸25%`,
         price: 1180,
@@ -1439,7 +1439,7 @@ module.exports = {
         ProductCategoryId: 4,
         UserId: 20,
         name: 'Teddy冬日溫暖翻領外套 - 2colors',
-        picture_url: 'https://i.imgur.com/RkgtjeV.gif',
+        picture_url: 'https://i.imgur.com/pBvIdAR.jpg',
         info: `
         肩54 胸55.5 袖長55 袖口寬17 下圍寬54 總長80`,
         price: 490,
@@ -2229,6 +2229,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+
       {
         ProductCategoryId: 7,
         UserId: 1,
