@@ -217,7 +217,7 @@ const orderController = {
           product_quantity: currentItem.product_quantity, // 要買的數量
           product_price: product.price,
           product_delivery: product.delivery,
-          seller_name: product.User.username,
+          seller_name: product.User.nickname,
           seller_email: product.User.email,
           seller_address: product.User.address,
         };
@@ -238,7 +238,7 @@ const orderController = {
           {
             UserId: req.user.id,
             client_id: req.user.id,
-            client_name: req.user.username,
+            client_name: req.user.nickname,
             client_email: req.user.email,
             client_address: req.user.address,
             seller_id: sortedCartItems[0].UserId,
