@@ -210,7 +210,7 @@ const productController = {
     })
       .then((user) => {
         //console.log(JSON.stringify(user, null, 4));
-        if (!user.is_vendor) {
+        if (!user || !user.is_vendor) {
           return res.status(400).json({ ok: 0, message: '非賣家' });
         }
 
