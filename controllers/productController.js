@@ -42,7 +42,7 @@ const productController = {
       offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
     const sort = _sort || 'id';
-    const order = _order || 'ASC';
+    const order = _order || 'DESC';
     let status = _status || 'passed';
     status = statusSwitch(status);
 
@@ -112,7 +112,7 @@ const productController = {
       offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
     const sort = _sort || 'id';
-    const order = _order || 'ASC';
+    const order = _order || 'DESC';
     let status = _status || 'passed';
     status = statusSwitch(status);
 
@@ -185,7 +185,7 @@ const productController = {
       offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
     const sort = _sort || 'id';
-    const order = _order || 'ASC';
+    const order = _order || 'DESC';
     let status = _status || 'passed';
     status = statusSwitch(status);
 
@@ -272,7 +272,7 @@ const productController = {
       offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
     const sort = _sort || 'id';
-    const order = _order || 'ASC';
+    const order = _order || 'DESC';
     let status = _status || 'passed';
 
     status = statusSwitch(status);
@@ -421,7 +421,6 @@ const productController = {
       !picture_url ||
       !info ||
       !delivery_location ||
-      !ProductCategoryId.trim() ||
       !name.trim() ||
       !picture_url.trim() ||
       !info.trim() ||
@@ -498,7 +497,6 @@ const productController = {
       !picture_url ||
       !info ||
       !delivery_location ||
-      !ProductCategoryId.trim() ||
       !name.trim() ||
       !picture_url.trim() ||
       !info.trim() ||
@@ -584,7 +582,7 @@ const productController = {
       offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
     const sort = _sort || 'id';
-    const order = _order || 'ASC';
+    const order = _order || 'DESC';
     let status = _status || 'all';
     status = statusSwitch(status);
 
@@ -638,7 +636,7 @@ const productController = {
       offset = (page - 1) * (_limit ? parseInt(_limit) : 10);
     }
     const sort = _sort || 'id';
-    const order = _order || 'ASC';
+    const order = _order || 'DESC';
     let status = _status || 'all';
     status = statusSwitch(status);
 
