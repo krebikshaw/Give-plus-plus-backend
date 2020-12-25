@@ -1,84 +1,128 @@
-# 二手交易平台 - 後端 api 系統
+# Give+= 二手交易平台
 
-下載案後：
-1. 補上 config.json
-2. 安裝套件 `npm install`
-3. 建立 table `npm run migrate`
-4. 啟動 server `npm run start`
-5. 生成測試用使用者資料 `npm run get-test-data`
+## 簡介
+這是 Give++ 二手交易平台的後端原始碼，採用 Express 和 Sequelize 開發。
 
-**幾點注意事項先紀錄在這邊：**
-1. 有任何動作之前，一定要開新的 branch，切勿直接改動 master 的東西
+## 建置
 
-2. commit 的標題請標註清楚這個 commit 做了什麼？
-    * 範例： 建立使用者登入功能 , 修改用戶聯絡平台功能
+1. 執行 `npm install` 安裝此專案所需的第三方套件
 
-3. 驗證登入身份的功能，**（已更新 jwt 身份驗證方法，請改由 jwt 身份驗證方式）**
+2. 新增 config/config.json，格式為：
 
-jwt 身份驗證，使用方法如下：
-* 在 controller 上方引入 checkToken 這個方法
-  * const { checkToken } = require('../middlewares/auth');
-* 在需要做驗證的時候，呼叫 checkToken(req)，把 request 傳進去，它會回傳 username 給你
+   ```json
+   {
+     "development": {
+       "username": "test",
+       "password": "test",
+       "database": "test",
+       "host": "localhost",
+       "dialect": "mysql"
+     },
+     "test": {
+       "username": "test",
+       "password": "test",
+       "database": "test",
+       "host": "localhost",
+       "dialect": "mysql"
+     },
+     "production": {
+       "username": "test",
+       "password": "test",
+       "database": "test",
+       "host": "localhost",
+       "dialect": "mysql",
+     }
+   }
+   ```
 
+3. 建立環境變數 .env，格式為：
+    ```js
+    SESSION_SECRET=''
+    ```
+
+4. 輸入指令 `npm run migrate` 以執行 Sequelize migration，在 MySQL 資料庫中建立 database 及 table。
+  
+5. 輸入指令 `npm run get-test-data` 以執行 Sequelize seeders 以在資料庫中建立初始 demo 資料。
+
+## 開發
+1. `npm run start`
+
+## 部屬
+1. `npm run build`
+
+## 專案架構   
+
+```js
+|   index.js                 // App 伺服器入口點
+|   package.json
+|   package-lock.json
+|   README.md
+|
++---config
+|     config.json            // Sequelize 設定檔
+|       
++---controllers              // 處理 API 邏輯
+|     userController.js
+|     productController.js
+|     cartController.js
+|     orderController.js
+|     manageController.js
+|       
++---middlewares              // 自訂 middlewares
+|     auth.js
+|       
++---models                   // 透過 Sequelize 和資料庫溝通
+|     index.js
+|     user.js
+|     product.js
+|     product_category.js
+|     cart.js
+|     cart_items.js
+|     order.js
+|     order_items.js
+|     faq.js
+|     faq_category.js
+|     mail.js
+|     rule.js
+|               
++---routes                    // 區分不同功能的 API 路由
+|     userRoutes.js
+|     productRoutes.js
+|     cartRoutes.js
+|     orderRoutes.js
+|     manageRoutes.js
+|       
++---node_modules
+|       
++---migrations                // Sequelize migrations
+|       
+\---seeders                   // Sequelize seeders
 ```
-// 簡易示範
-const { checkToken } = require('../middlewares/auth');    // 引入 checkToken
 
-const userController = {
-  updateUser: (req, res,) => {
+## 使用的第三方 library
 
-    // 在需要做驗證的地方，呼叫 checkToken(req)
-    const username = checkToken(req) || '';  
+### bcrypt
+使用此套件將密碼加密後再存入資料庫
 
-    // 錯誤處理，沒拿到 username 就回傳錯誤
-    if (!username) return res.status(400).json({"ok":0,"data":"missing token"});
-    .
-    .
-    .
-       //  利用拿到的 username 來做事
-  }
-}
-```
-有拿到 username 就代表驗證成功，沒拿到就代表驗證失敗，所以驗證失敗就回傳錯誤訊息
+### cors
+使用此套件解決跨來源資源共用
 
-**如果這邊示範不清楚，可以參考 userController.getOwnInfo 的寫法**
+### dotenv
+使用此套件設置環境變數
 
+### jsonwebtoken
+使用 JWT 來實作登入機制驗證
 
-jwt 身份驗證，測試方法如下：
-* 測試 API 的時候，於 header 上面帶上參數
-  * key 填上： `Authorization`
-  * value 填上： `'Bearer ' + token`
-* token 可以利用官網 的轉換工具來產生
+### mysql2
+使用 mysql2 連線資料庫
 
-```
-key:
-Authorization
+### sequelize
+使用 ORM 工具 Sequelize 來操作資料庫
 
-value:
-Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InVzZXJuYW1lIjoibHVja3lsdWNreSJ9LCJleHAiOjE2MDkwNTAzMDAsImlhdCI6MTYwNTY2NjMwMH0.UZQbxATmdoh4KsazfH0IzepqOW86jCo77C24ShGWGlI
+## API 文件
 
-// 上面這段 token 裡面帶著的資料為 username: "luckylucky"
-```
+[詳細 API 文件參考連結](https://hackmd.io/@MpgA62bSRQShaDG7oBXMdg/SJ-Imc8dv)
 
-4. api 回傳的 response 請依照規定格式填寫：(可參考 https://hackmd.io/tpoyClJGRW6kfrby5hmIHg?both)
+## License
 
-```
-{
-  "ok": 1,   // 第一個值寫 ok 回傳成功寫 1 回傳失敗寫 0，所有 response 都要設定第一個值
-  "data": {  // 第二個值寫 data 裡面寫回傳的資料，用物件包起來，如果不用回傳資料就不用設定第二個值
-    ...
-  }
-}
-
-  "ok": 0  的情況：
-     - 例如：表單資料不齊、身份驗證有誤、資料庫更新失敗、只要是預期動作沒辦法完成，都回傳 "ok": 0
-
-```
-
-5. 要改動 index.js
-    * 先在群組告知
-    * 另外開一條專門改 index.js 的 branch
-    * 改完之後發 pull request 請第二個人幫你檢查
-    * merge 之後於群組通知大家更新
-    
-    
+[MIT](https://choosealicense.com/licenses/mit/)
