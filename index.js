@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
@@ -6,24 +8,19 @@ const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const manageRoutes = require('./routes/manageRoutes');
-const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-/*
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-*/
+
 app.set('trust proxy', 1);
 app.use(session({
-  secret: 'keyboard cat',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  // cookie: { secure: true }
 }));
 
 app.listen(port, () => {
