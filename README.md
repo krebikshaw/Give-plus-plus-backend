@@ -1,4 +1,4 @@
-# Give+= 二手交易平台
+# Give++ 二手交易平台
 
 ## 簡介
 這是 Give++ 二手交易平台的後端原始碼，採用 Express 和 Sequelize 開發。
