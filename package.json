@@ -1,25 +1,22 @@
 {
-  "name": "second-hand-trading-platform-backend",
+  "name": "give-plus-plus-platform-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "get-test-data": "npx sequelize-cli db:seed:all",
     "migrate": "npx sequelize-cli db:migrate",
-    "build": "npm run migrate && node index.js",
+    "get-test-data": "npx sequelize-cli db:seed:all",
+    "build": "npm run migrate && npm run get-test-data && node index.js",
     "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "express-routes": "^1.0.0",
     "express-session": "^1.17.1",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
