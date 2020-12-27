@@ -4,6 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Users', [
       {
+        id: 1,
         username: 'seller01',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -27,6 +28,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 2,
         username: 'pretty01',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -50,6 +52,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 3,
         username: 'lucky01',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -73,6 +76,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 4,
         username: 'hallow01',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -96,6 +100,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 5,
         username: 'what01',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -119,6 +124,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 6,
         username: 'claygao123',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -139,6 +145,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 7,
         username: 'nicolakacha',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -160,6 +167,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 8,
         username: 'nicole0214',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -181,6 +189,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 9,
         username: 'kevin1023',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -201,6 +210,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 10,
         username: 'CarolinaYang123',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -221,6 +231,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 11,
         username: 'Alan',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -249,6 +260,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 12,
         username: 'Dean',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -274,6 +286,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 13,
         username: 'Eric',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -299,6 +312,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 14,
         username: 'Gary',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -325,6 +339,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 15,
         username: 'Jeff',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
@@ -352,6 +367,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 16,
         username: 'Rose',
         password:
           '$2b$10$VuXJ8XmYcnUgY0CbokzEJ.LtiIWn1GG1osbjgNHnC6ETsxdweH.42',
@@ -372,6 +388,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 17,
         username: 'Lisa',
         password:
           '$2b$10$vL5pN4ikqIQVDRSVM/C3meRwz0F2pOjs1YUK5s1CgKZdlhKK1H.w6',
@@ -395,6 +412,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 18,
         username: 'IU',
         password:
           '$2b$10$mWUcOriUT7rdE05ODT8WJ.0BOAPZvUeWDya9Lg0cb8Av4DAySQmfu',
@@ -418,6 +436,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 19,
         username: 'SuzyBaby',
         password:
           '$2b$10$wem.xyB2/VBRQaSay56qxe85j9xiTfTsqKNsUZDaWYZvspMaiY3C2',
@@ -442,6 +461,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 20,
         username: 'DabeChen',
         password:
           '$2b$10$QB3WdJ/WgmBmM8K6gpXZw.wofnHWRyzgRerpg.sDSpicIFdtDnezC',
@@ -467,6 +487,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        id: 21,
         username: 'Admin01',
         password:
           '$2b$10$CCGN4qGHNBaIyVk9uFLYOePbx0EFWoxcTwTJJ9Zsac.5sQULS9DFy',
