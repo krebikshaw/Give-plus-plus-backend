@@ -4091,7 +4091,7 @@ module.exports = {
       {
         ProductCategoryId: 11,
         UserId: 20,
-        name: 'PS4 惡靈古堡5',
+        name: 'AESOP 面霜',
         picture_url:
           'https://i.pinimg.com/564x/15/98/15/1598150924225b746b7d6515fd46814b.jpg',
         info: `
