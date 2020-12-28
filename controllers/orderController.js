@@ -238,7 +238,7 @@ const orderController = {
 
   // 成立訂單
   newOrder: async (req, res) => {
-    console.log("開始成立訂單:");
+    console.log("==========開始成立訂單===========");
     // 把 request.body 按 product_id 排序
     const sortedCartItems = req.body.sort((a, b) => a.ProductId - b.ProductId);
     console.log("從前端拿到的資料以 productId 做排序:", sortedCartItems);
@@ -279,7 +279,7 @@ const orderController = {
     }
 
     // 進入成立訂單 transaction
-    console.log("進入成立訂單:");
+    console.log("==========進入成立訂單===========");
     try {
       const orderNumber = generateOrderNumber();
       await sequelize.transaction(async (t) => {
@@ -310,7 +310,7 @@ const orderController = {
         }
 
         // 對準備要下單的商品，逐一檢查與更新賣家商品庫存
-        console.log("開始更改 products table:");
+        console.log("==========開始更改 products table:===========");
         await Promise.all(
           productsData.map((productData) => {
             let stockQuantity = productData.productOriginQuantity; // 賣家的庫存數量
@@ -354,7 +354,7 @@ const orderController = {
         });
 
         // 刪除買家購物車商品
-        console.log("開始刪除購物車商品:");
+        console.log("==========開始刪除購物車商品:===========");
         await Cart_items.destroy(
           {
             where: {
