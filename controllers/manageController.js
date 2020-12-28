@@ -122,7 +122,7 @@ const manageController = {
         return res.status(200).json(faqsData);
       })
       .catch((err) => {
-        console.log('撈取所有常見問題錯誤：', faqsData);
+        console.log('撈取所有常見問題錯誤：', err);
         return res.status(400).json({ ok: 0, message: err });
       });
   },
