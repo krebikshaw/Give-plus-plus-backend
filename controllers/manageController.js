@@ -145,7 +145,7 @@ const manageController = {
         });
       })
       .catch((err) => {
-        console.log('撈取單一常見問題失敗：', category);
+        console.log('撈取單一常見問題失敗：', err);
         res.status(400).json(noDataMessage);
       });
   },
