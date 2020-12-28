@@ -1811,7 +1811,7 @@ module.exports = {
       {
         ProductCategoryId: 5,
         UserId: 16,
-        name: 'PS4 惡靈古堡5',
+        name: 'AESOP 肌膚調理凝露B3c',
         picture_url: 'https://i.imgur.com/UAkr3G7.jpg',
         info: `
         Aesop家的超級明星商品 肌膚調理凝露
@@ -4556,7 +4556,7 @@ module.exports = {
         picture_url:
           'https://i.pinimg.com/564x/55/ac/17/55ac17ba8a7056e5b338e81a6d34cb5d.jpg',
         info: `
-        商品狀況：約 8 誠心 僅擺設 
+        商品狀況：約 8 成新 僅擺設 
         有使用痕跡和些微刮痕
         `,
         price: 3000,
