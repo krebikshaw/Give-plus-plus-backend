@@ -41,6 +41,7 @@ function generateOrderNumber() {
 const orderController = {
   // 取得全部訂單列表
   getAllOrders: (req, res) => {
+    console.log("==========開始執行取得全部訂單列表===========");
     Order.findAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
@@ -60,6 +61,7 @@ const orderController = {
   },
   // 取得單一訂單明細
   getOneOrder: (req, res) => {
+    console.log("==========開始執行取得單一訂單明細===========");
     Order.findByPk(req.params.id).then((order) => {
       if (!order) return res.status(400).json(noOrderMessage);
       Order_items.findAll({
@@ -89,6 +91,7 @@ const orderController = {
   },
   // 刪除訂單資料 限制是已完成的狀態才可以刪除
   deleteOrder: (req, res) => {
+    console.log("==========開始執行刪除訂單===========");
     Order.destroy({
       where: {
         id: req.params.id,
@@ -113,6 +116,7 @@ const orderController = {
   },
   // 訂單取消
   cancelOrder: (req, res) => {
+    console.log("==========開始執行取消訂單===========");
     let id = req.user.id;
     const {
       cancelReason, // 備註
@@ -142,6 +146,7 @@ const orderController = {
   },
   // 訂單完成
   orderComplete: (req, res) => {
+    console.log("==========開始執行訂單完成===========");
     let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
@@ -162,6 +167,7 @@ const orderController = {
   },
   // 訂單出貨
   sendOrder: (req, res) => {
+    console.log("==========開始執行訂單出貨===========");
     let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
@@ -182,6 +188,7 @@ const orderController = {
   },
   // 訂單付款
   payOrder: (req, res) => {
+    console.log("==========開始執行訂單付款===========");
     let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
@@ -202,6 +209,7 @@ const orderController = {
   },
   // 取得自己賣的訂單列表
   sellOrder: (req, res) => {
+    console.log("==========開始執行取得自己賣的訂單列表===========");
     let id = req.user.id;
     Order.findAll({
       where: {
@@ -219,6 +227,7 @@ const orderController = {
   },
   // 取得自己買的訂單列表
   buyOrder: (req, res) => {
+    console.log("==========開始執行取得自己買的訂單列表===========");
     let id = req.user.id;
     Order.findAll({
       where: {
