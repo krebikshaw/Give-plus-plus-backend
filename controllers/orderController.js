@@ -20,6 +20,7 @@ function countTotalAmount(productsData) {
     (productData) =>
       (total += productData.product_price * productData.product_quantity)
   );
+  console.log("==========開始計算訂單總金額===========");
   console.log("計算訂單總金額，回傳訂單總金額:", total);
   return total;
 }
@@ -32,6 +33,7 @@ function generateOrderNumber() {
     (date.getMonth() + 1).toString() +
     ((date.getDate() < 10 ? "0" : "") + date.getDate()).toString() +
     Math.round(Math.random() * 10000).toString();
+  console.log("==========開始計算訂單編號===========");
   console.log("計算訂單編號，回傳訂單編號:", orderNumber);
   return orderNumber;
 }
@@ -48,6 +50,7 @@ const orderController = {
         if (!orders || orders.length == 0) {
           return res.status(400).json(noOrderMessage);
         }
+        console.log("==========取得全部訂單列表===========");
         return res.status(200).json({ ok: 1, data: orders });
       })
       .catch((res, err) => {
@@ -75,6 +78,7 @@ const orderController = {
       })
         .then((product) => {
           if (!product) return res.status(400).json(noOrderMessage);
+          console.log("==========取得單一訂單明細===========");
           return res.status(200).json({ ok: 1, data: product });
         })
         .catch((res, err) => {
@@ -98,6 +102,7 @@ const orderController = {
       })
         .then(() => {
           if (!order) return res.status(400).json(noOrderMessage);
+          console.log("==========成功刪除訂單資料===========");
           return res.status(200).json(successMessage);
         })
         .catch((err) => {
@@ -122,9 +127,11 @@ const orderController = {
               cancelReason,
             })
             .then(() => {
+              console.log("==========成功取消訂單===========");
               res.status(200).json({ ok: 1, message: "success" });
             });
         } else {
+          console.log("==========取消訂單失敗===========");
           return res.status(400).json(failToCancelOrder);
         }
       })
@@ -140,9 +147,11 @@ const orderController = {
       .then((order) => {
         if (id === order.client_id || id === order.seller_id) {
           return order.update({ is_completed: 1 }).then(() => {
+            console.log("==========完成訂單成功===========");
             res.status(200).json(successMessage);
           });
         } else {
+          console.log("==========完成訂單失敗===========");
           return res.status(400).json(failToCompleteOrder);
         }
       })
@@ -158,9 +167,11 @@ const orderController = {
       .then((order) => {
         if (id === order.seller_id) {
           return order.update({ is_sent: 1 }).then(() => {
+            console.log("==========訂單出貨成功===========");
             res.status(200).json({ ok: 1, message: "success" });
           });
         } else {
+          console.log("==========訂單出貨失敗===========");
           return res.status(400).json(failToSendOrder);
         }
       })
@@ -176,9 +187,11 @@ const orderController = {
       .then((order) => {
         if (id === order.client_id) {
           return order.update({ is_paid: 1 }).then(() => {
+            console.log("==========訂單付款成功===========");
             res.status(200).json(successMessage);
           });
         } else {
+          console.log("==========訂單付款失敗===========");
           return res.status(400).json(failToPaidOrder);
         }
       })
@@ -196,6 +209,7 @@ const orderController = {
       },
     })
       .then((orders) => {
+        console.log("==========取得自己賣的訂單列表成功===========");
         res.status(200).json({ ok: 1, data: orders });
       })
       .catch((err) => {
@@ -213,6 +227,7 @@ const orderController = {
     })
       .then((orders) => {
         if (!orders) return res.status(400).json(noOrderMessage);
+        console.log("==========取得自己買的訂單列表成功===========");
         res.status(200).json({ ok: 1, data: orders });
       })
       .catch((err) => {
@@ -308,6 +323,7 @@ const orderController = {
             if (stockQuantity - cartQuantity < 0) {
               console.log("超賣錯誤:");
               throw new Error();
+              ㄠ;
             }
             // 把要買的商品數量從賣家商品的數量中減去
             Product.update(
