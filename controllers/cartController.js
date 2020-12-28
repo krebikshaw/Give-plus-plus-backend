@@ -7,13 +7,14 @@ const noDataMessage = { ok: 0, message: 'No Data.' };
 const notEnoughMessage = { ok: 0, message: 'quantity is too much' };
 
 async function updateCartItems(cartItems) {
+  console.log('========== 開始更新購物車商品狀態 ========== ');
   for (cartItem of cartItems) {
     await cartItem
       .update({
         is_empty: cartItem.product_quantity > cartItem.Product.quantity ? 1 : 0,
       })
       .then(() => {
-        console.log('更新購物車商品狀態成功');
+        console.log('========== 更新購物車商品狀態成功 ========== ');
         return;
       })
       .catch((err) => {
@@ -67,7 +68,7 @@ function isValidNumber(quantity) {
 const cartController = {
   // get all my cart items.
   getCart: async (req, res) => {
-    console.log('開始撈取購物車');
+    console.log('========== 開始撈取購物車 ==========');
     await Cart_items.findAll({
       where: { CartId: req.user.id },
       include: [Product],
@@ -75,7 +76,7 @@ const cartController = {
 
       // if product is not enough, let status become empty.
       .then((items) => {
-        console.log('更新購物車商品狀態');
+        console.log('========== 準備進入更新購物車商品狀態 ==========');
         updateCartItems(items);
       })
       .catch((err) => {
@@ -84,7 +85,7 @@ const cartController = {
       });
 
     // only find cart item whose is_empty is false.
-    console.log('開始撈取更新後的購物車商品');
+    console.log('========== 開始撈取更新後的購物車商品 ==========');
     Cart_items.findAll({
       where: {
         CartId: req.user.id,
@@ -98,7 +99,7 @@ const cartController = {
     })
       // send updated data response to front end.
       .then((updatedItems) => {
-        console.log('撈取更新過後的購物車商品成功');
+        console.log('========== 撈取更新過後的購物車商品成功 ==========');
         return res
           .status(200)
           .json({ ok: 1, data: getCartItems(updatedItems) });
@@ -110,16 +111,19 @@ const cartController = {
   },
 
   addItem: async (req, res) => {
-    if (!isValidNumber(req.body.quantity))
+    console.log('========== 開始新增購物車商品 ==========');
+    if (!isValidNumber(req.body.quantity)) {
       return res.status(400).json({ ok: 0, message: 'Not valid' });
+    }
 
     // get product id and quantity.
     const { productId, quantity } = req.body;
     const userId = req.user.id;
 
     // checking necessary field.
-    if (!productId || quantity <= 0)
+    if (!productId || quantity <= 0) {
       return res.status(400).json(emptyErrorMessage);
+    }
 
     // find product info by product id.
     const productInfo = await Product.findOne({
@@ -127,7 +131,9 @@ const cartController = {
     }).then((product) => product);
 
     // if product info cannot be found, return no data message.
-    if (!productInfo) return res.status(400).json(noDataMessage);
+    if (!productInfo) {
+      return res.status(400).json(noDataMessage);
+    }
 
     // get product quantity and sellerId
     const productQuantity = productInfo.quantity;
@@ -147,7 +153,7 @@ const cartController = {
 
     // if it's not in user's cart, create a new cart_items data.
     if (!existedCartItem) {
-      console.log('開始新增購物車商品');
+      console.log('========== 該商品不在購物車時的新增 ==========');
       Cart_items.create({
         ProductId: productId,
         CartId: userId,
@@ -156,7 +162,7 @@ const cartController = {
         product_quantity: quantity,
       })
         .then(() => {
-          console.log('新增購物車商品成功');
+          console.log('========== 新增購物車商品成功 ========== ');
           return res.status(200).json(successMessage);
         })
         .catch((err) => {
@@ -165,6 +171,7 @@ const cartController = {
         });
     } else {
       // count the existed cart item quantity + the quantity user wants to add.
+      console.log('========== 該商品已在購物車時的新增 ==========');
       const cartItemQuantity =
         parseInt(existedCartItem.product_quantity) + parseInt(quantity);
 
@@ -176,7 +183,7 @@ const cartController = {
       existedCartItem
         .update({ product_quantity: cartItemQuantity })
         .then(() => {
-          console.log('新增購物車商品成功');
+          console.log('========== 新增購物車商品成功 ========== ');
           return res.status(200).json(successMessage);
         })
         .catch((err) => {
@@ -187,6 +194,7 @@ const cartController = {
   },
 
   editItem: async (req, res) => {
+    console.log('========== 開始編輯購物車商品 ==========');
     if (!isValidNumber(req.body.quantity))
       return res.status(400).json({ ok: 0, message: 'Not valid.' });
 
@@ -211,12 +219,12 @@ const cartController = {
     if (cartItemQuantity > productQuantity)
       return res.status(400).json(notEnoughMessage);
 
-    console.log('開始編輯購物車數量');
+    console.log('========== 開始編輯購物車數量 ==========');
     // else, update the existed cart item quantity.
     existedCartItem
       .update({ product_quantity: quantity })
       .then(() => {
-        console.log('編輯購物車數量成功');
+        console.log('========== 編輯購物車數量成功 ==========');
         res.status(200).json(successMessage);
       })
       .catch((err) => {
@@ -226,7 +234,7 @@ const cartController = {
   },
 
   deleteItem: async (req, res) => {
-    console.log('開始刪除購物車商品');
+    console.log('========== 開始刪除購物車商品 ==========');
     const existedCartItem = await Cart_items.findOne({
       where: {
         id: req.params.id,
@@ -239,7 +247,7 @@ const cartController = {
     existedCartItem
       .destroy()
       .then(() => {
-        console.log('刪除購物車商品成功');
+        console.log('========== 刪除購物車商品成功 ==========');
         return res.status(200).json(successMessage);
       })
       .catch((err) => {
@@ -249,7 +257,7 @@ const cartController = {
   },
 
   deleteItemBySeller: async (req, res) => {
-    console.log('開始刪除同賣家的購物車商品');
+    console.log('========== 開始刪除同賣家的購物車商品 ==========');
     const existedCartItems = await Cart_items.findAll({
       where: {
         UserId: req.params.id,
@@ -266,7 +274,7 @@ const cartController = {
           return res.status(400).json({ ok: 0, message: err });
         })
     );
-    console.log('刪除同賣家的購物車商品成功');
+    console.log('========== 刪除同賣家的購物車商品成功 ==========');
     return res.status(200).json(successMessage);
   },
 };
