@@ -50,8 +50,10 @@ const orderController = {
         }
         return res.status(200).json({ ok: 1, data: orders });
       })
-      .catch((res, err) => res.status(400).json(noOrderMessage));
-    console.log("取得全部訂單列表錯誤，回傳 err:", err);
+      .catch((res, err) => {
+        console.log("取得全部訂單列表錯誤，回傳 err:", err);
+        res.status(400).json(noOrderMessage);
+      });
   },
   // 取得單一訂單明細
   getOneOrder: (req, res) => {
@@ -75,8 +77,10 @@ const orderController = {
           if (!product) return res.status(400).json(noOrderMessage);
           return res.status(200).json({ ok: 1, data: product });
         })
-        .catch((res, err) => res.status(400).json(noOrderMessage));
-      console.log("取得單一訂單明細錯誤，回傳 err:", err);
+        .catch((res, err) => {
+          console.log("取得單一訂單明細錯誤，回傳 err:", err);
+          res.status(400).json(noOrderMessage);
+        });
     });
   },
   // 刪除訂單資料 限制是已完成的狀態才可以刪除
@@ -96,8 +100,10 @@ const orderController = {
           if (!order) return res.status(400).json(noOrderMessage);
           return res.status(200).json(successMessage);
         })
-        .catch((err) => res.status(400).json(failDeleteOrderItems));
-      console.log("刪除訂單資料錯誤，回傳 err:", err);
+        .catch((err) => {
+          console.log("刪除訂單資料錯誤，回傳 err:", err);
+          res.status(400).json(failDeleteOrderItems);
+        });
     });
   },
   // 訂單取消
@@ -122,8 +128,10 @@ const orderController = {
           return res.status(400).json(failToCancelOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToCancelOrder));
-    console.log("訂單取消錯誤，回傳 err:", err);
+      .catch((err) => {
+        console.log("訂單取消錯誤，回傳 err:", err);
+        res.status(400).json(failToCancelOrder);
+      });
   },
   // 訂單完成
   orderComplete: (req, res) => {
@@ -138,8 +146,10 @@ const orderController = {
           return res.status(400).json(failToCompleteOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToCompleteOrder));
-    console.log("訂單完成錯誤，回傳 err:", err);
+      .catch((err) => {
+        console.log("訂單完成錯誤，回傳 err:", err);
+        res.status(400).json(failToCompleteOrder);
+      });
   },
   // 訂單出貨
   sendOrder: (req, res) => {
@@ -154,8 +164,10 @@ const orderController = {
           return res.status(400).json(failToSendOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToSendOrder));
-    console.log("訂單出貨錯誤，回傳 err:", err);
+      .catch((err) => {
+        console.log("訂單出貨錯誤，回傳 err:", err);
+        res.status(400).json(failToSendOrder);
+      });
   },
   // 訂單付款
   payOrder: (req, res) => {
@@ -170,8 +182,10 @@ const orderController = {
           return res.status(400).json(failToPaidOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToPaidOrder));
-    console.log("訂單付款錯誤，回傳 err:", err);
+      .catch((err) => {
+        console.log("訂單付款錯誤，回傳 err:", err);
+        res.status(400).json(failToPaidOrder);
+      });
   },
   // 取得自己賣的訂單列表
   sellOrder: (req, res) => {
@@ -184,8 +198,10 @@ const orderController = {
       .then((orders) => {
         res.status(200).json({ ok: 1, data: orders });
       })
-      .catch((err) => res.status(400).json(noOrderMessage));
-    console.log("取得自己賣的訂單列表錯誤，回傳 err:", err);
+      .catch((err) => {
+        console.log("取得自己賣的訂單列表錯誤，回傳 err:", err);
+        res.status(400).json(noOrderMessage);
+      });
   },
   // 取得自己買的訂單列表
   buyOrder: (req, res) => {
@@ -199,8 +215,10 @@ const orderController = {
         if (!orders) return res.status(400).json(noOrderMessage);
         res.status(200).json({ ok: 1, data: orders });
       })
-      .catch((err) => res.status(400).json(noOrderMessage));
-    console.log("取得自己買的訂單列表錯誤，回傳 err:", err);
+      .catch((err) => {
+        console.log("取得自己買的訂單列表錯誤，回傳 err:", err);
+        res.status(400).json(noOrderMessage);
+      });
   },
 
   // 成立訂單
