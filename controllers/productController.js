@@ -669,7 +669,7 @@ const productController = {
           return res.status(400).json({ ok: 0, message: '查無資料' });
         }
 
-        if (product.UserId !== req.user.id) {
+        if (product.UserId !== req.user.id && !req.user.is_admin) {
           console.log('==========刪除商品結束===========');
           return res.status(400).json({ ok: 0, message: 'permission denied' });
         }
