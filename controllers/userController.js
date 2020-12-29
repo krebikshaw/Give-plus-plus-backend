@@ -431,7 +431,8 @@ const userController = {
       .then(user => {
         if (!user) return res.status(400).json(userNotFoundMessage);
         return user.update({
-          is_vendor: true
+          is_vendor: true,
+          nickname: req.user.username
         })
           .then(() => {
             console.log('==========成功申請成為賣家==========')
