@@ -13,7 +13,6 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       OrderId: {
-        allowNull: false,
         type: Sequelize.INTEGER
       },
       product_name: {

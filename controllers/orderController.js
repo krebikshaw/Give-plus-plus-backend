@@ -20,6 +20,8 @@ function countTotalAmount(productsData) {
     (productData) =>
       (total += productData.product_price * productData.product_quantity)
   );
+  console.log("==========開始計算訂單總金額===========");
+  console.log("計算訂單總金額，回傳訂單總金額:", total);
   return total;
 }
 
@@ -31,12 +33,15 @@ function generateOrderNumber() {
     (date.getMonth() + 1).toString() +
     ((date.getDate() < 10 ? "0" : "") + date.getDate()).toString() +
     Math.round(Math.random() * 10000).toString();
+  console.log("==========開始計算訂單編號===========");
+  console.log("計算訂單編號，回傳訂單編號:", orderNumber);
   return orderNumber;
 }
 
 const orderController = {
   // 取得全部訂單列表
   getAllOrders: (req, res) => {
+    console.log("==========開始執行取得全部訂單列表===========");
     Order.findAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
@@ -46,12 +51,17 @@ const orderController = {
         if (!orders || orders.length == 0) {
           return res.status(400).json(noOrderMessage);
         }
+        console.log("==========取得全部訂單列表===========");
         return res.status(200).json({ ok: 1, data: orders });
       })
-      .catch((res, err) => res.status(400).json(noOrderMessage));
+      .catch((res, err) => {
+        console.log("取得全部訂單列表錯誤，回傳 err:", err);
+        res.status(400).json(noOrderMessage);
+      });
   },
   // 取得單一訂單明細
   getOneOrder: (req, res) => {
+    console.log("==========開始執行取得單一訂單明細===========");
     Order.findByPk(req.params.id).then((order) => {
       if (!order) return res.status(400).json(noOrderMessage);
       Order_items.findAll({
@@ -70,13 +80,18 @@ const orderController = {
       })
         .then((product) => {
           if (!product) return res.status(400).json(noOrderMessage);
+          console.log("==========取得單一訂單明細===========");
           return res.status(200).json({ ok: 1, data: product });
         })
-        .catch((res, err) => res.status(400).json(noOrderMessage));
+        .catch((res, err) => {
+          console.log("取得單一訂單明細錯誤，回傳 err:", err);
+          res.status(400).json(noOrderMessage);
+        });
     });
   },
   // 刪除訂單資料 限制是已完成的狀態才可以刪除
   deleteOrder: (req, res) => {
+    console.log("==========開始執行刪除訂單===========");
     Order.destroy({
       where: {
         id: req.params.id,
@@ -90,13 +105,18 @@ const orderController = {
       })
         .then(() => {
           if (!order) return res.status(400).json(noOrderMessage);
+          console.log("==========成功刪除訂單資料===========");
           return res.status(200).json(successMessage);
         })
-        .catch((err) => res.status(400).json(failDeleteOrderItems));
+        .catch((err) => {
+          console.log("刪除訂單資料錯誤，回傳 err:", err);
+          res.status(400).json(failDeleteOrderItems);
+        });
     });
   },
   // 訂單取消
   cancelOrder: (req, res) => {
+    console.log("==========開始執行取消訂單===========");
     let id = req.user.id;
     const {
       cancelReason, // 備註
@@ -111,61 +131,85 @@ const orderController = {
               cancelReason,
             })
             .then(() => {
+              console.log("==========成功取消訂單===========");
               res.status(200).json({ ok: 1, message: "success" });
             });
         } else {
+          console.log("==========取消訂單失敗===========");
           return res.status(400).json(failToCancelOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToCancelOrder));
+      .catch((err) => {
+        console.log("訂單取消錯誤，回傳 err:", err);
+        res.status(400).json(failToCancelOrder);
+      });
   },
   // 訂單完成
   orderComplete: (req, res) => {
+    console.log("==========開始執行訂單完成===========");
     let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (id === order.client_id || id === order.seller_id) {
           return order.update({ is_completed: 1 }).then(() => {
+            console.log("==========完成訂單成功===========");
             res.status(200).json(successMessage);
           });
         } else {
+          console.log("==========完成訂單失敗===========");
           return res.status(400).json(failToCompleteOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToCompleteOrder));
+      .catch((err) => {
+        console.log("訂單完成錯誤，回傳 err:", err);
+        res.status(400).json(failToCompleteOrder);
+      });
   },
   // 訂單出貨
   sendOrder: (req, res) => {
+    console.log("==========開始執行訂單出貨===========");
     let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (id === order.seller_id) {
           return order.update({ is_sent: 1 }).then(() => {
+            console.log("==========訂單出貨成功===========");
             res.status(200).json({ ok: 1, message: "success" });
           });
         } else {
+          console.log("==========訂單出貨失敗===========");
           return res.status(400).json(failToSendOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToSendOrder));
+      .catch((err) => {
+        console.log("訂單出貨錯誤，回傳 err:", err);
+        res.status(400).json(failToSendOrder);
+      });
   },
   // 訂單付款
   payOrder: (req, res) => {
+    console.log("==========開始執行訂單付款===========");
     let id = req.user.id;
     Order.findByPk(req.params.id)
       .then((order) => {
         if (id === order.client_id) {
           return order.update({ is_paid: 1 }).then(() => {
+            console.log("==========訂單付款成功===========");
             res.status(200).json(successMessage);
           });
         } else {
+          console.log("==========訂單付款失敗===========");
           return res.status(400).json(failToPaidOrder);
         }
       })
-      .catch((err) => res.status(400).json(failToPaidOrder));
+      .catch((err) => {
+        console.log("訂單付款錯誤，回傳 err:", err);
+        res.status(400).json(failToPaidOrder);
+      });
   },
   // 取得自己賣的訂單列表
   sellOrder: (req, res) => {
+    console.log("==========開始執行取得自己賣的訂單列表===========");
     let id = req.user.id;
     Order.findAll({
       where: {
@@ -173,12 +217,17 @@ const orderController = {
       },
     })
       .then((orders) => {
+        console.log("==========取得自己賣的訂單列表成功===========");
         res.status(200).json({ ok: 1, data: orders });
       })
-      .catch((err) => res.status(400).json(noOrderMessage));
+      .catch((err) => {
+        console.log("取得自己賣的訂單列表錯誤，回傳 err:", err);
+        res.status(400).json(noOrderMessage);
+      });
   },
   // 取得自己買的訂單列表
   buyOrder: (req, res) => {
+    console.log("==========開始執行取得自己買的訂單列表===========");
     let id = req.user.id;
     Order.findAll({
       where: {
@@ -187,17 +236,25 @@ const orderController = {
     })
       .then((orders) => {
         if (!orders) return res.status(400).json(noOrderMessage);
+        console.log("==========取得自己買的訂單列表成功===========");
         res.status(200).json({ ok: 1, data: orders });
       })
-      .catch((err) => res.status(400).json(noOrderMessage));
+      .catch((err) => {
+        console.log("取得自己買的訂單列表錯誤，回傳 err:", err);
+        res.status(400).json(noOrderMessage);
+      });
   },
 
   // 成立訂單
   newOrder: async (req, res) => {
+    console.log("==========開始成立訂單===========");
     // 把 request.body 按 product_id 排序
     const sortedCartItems = req.body.sort((a, b) => a.ProductId - b.ProductId);
+    console.log("從前端拿到的資料以 productId 做排序:", sortedCartItems);
+
     // 拿到準備下單的商品 id 的陣列
     const productIdList = sortedCartItems.map((item) => item.ProductId);
+    console.log("拿到準備下單的商品 id 陣列:", productIdList);
     // 整理成之後要用來新增至 order items 的陣列
     const productsData = await Product.findAll({
       where: { id: { [Op.in]: productIdList } },
@@ -223,6 +280,7 @@ const orderController = {
         };
       })
     );
+    console.log("用來新增訂單的資料:", productsData);
 
     // 如果沒有商品資料就回傳錯誤訊息
     if (!productsData) {
@@ -230,6 +288,7 @@ const orderController = {
     }
 
     // 進入成立訂單 transaction
+    console.log("==========進入成立訂單===========");
     try {
       const orderNumber = generateOrderNumber();
       await sequelize.transaction(async (t) => {
@@ -249,7 +308,10 @@ const orderController = {
             total_amount: countTotalAmount(productsData),
           },
           { transaction: t }
-        ).then((order) => order.id);
+        )
+          .then((order) => order.id)
+          .catch((err) => console.log("新增 order 失敗：", err));
+        console.log("新增訂單完成後拿到 orderId:", orderId);
 
         // 如果建立訂單失敗沒拿到 orderId，就回傳錯誤訊息
         if (!orderId) {
@@ -257,12 +319,21 @@ const orderController = {
         }
 
         // 對準備要下單的商品，逐一檢查與更新賣家商品庫存
+        console.log("==========開始更改 products table:===========");
         await Promise.all(
           productsData.map((productData) => {
             let stockQuantity = productData.productOriginQuantity; // 賣家的庫存數量
             let cartQuantity = productData.product_quantity; // 準備要買的數量
+            console.log("商品 id:", productData.ProductId);
+            console.log("賣家的庫存數量:", stockQuantity);
+            console.log("準備要買的數量:", cartQuantity);
+
             // 數量不夠賣，就回傳錯誤跳出 transaction
-            if (stockQuantity - cartQuantity < 0) throw new Error();
+            if (stockQuantity - cartQuantity < 0) {
+              console.log("超賣錯誤:");
+              throw new Error();
+              ㄠ;
+            }
             // 把要買的商品數量從賣家商品的數量中減去
             Product.update(
               { quantity: stockQuantity - cartQuantity },
@@ -273,6 +344,7 @@ const orderController = {
         );
 
         // 數量足夠就批量新增訂單商品
+        console.log("已確認數量足夠，開始新增 Order_items:");
         await Order_items.bulkCreate(
           productsData,
           {
@@ -291,6 +363,7 @@ const orderController = {
         });
 
         // 刪除買家購物車商品
+        console.log("==========開始刪除購物車商品:===========");
         await Cart_items.destroy(
           {
             where: {
@@ -301,9 +374,11 @@ const orderController = {
           { transaction: t }
         );
       });
+      console.log("成立訂單完成，回傳 orderNumber:", orderNumber);
       return res.status(200).json({ ok: 1, orderNumber });
     } catch (err) {
-      return res.status(200).json(failToCreateNewOrder);
+      console.log("成立訂單錯誤，回傳 err:", err);
+      return res.status(200).json({ ok: 0, err });
     }
   },
 };
