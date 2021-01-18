@@ -332,7 +332,6 @@ const orderController = {
             if (stockQuantity - cartQuantity < 0) {
               console.log("超賣錯誤:");
               throw new Error();
-              ㄠ;
             }
             // 把要買的商品數量從賣家商品的數量中減去
             Product.update(
